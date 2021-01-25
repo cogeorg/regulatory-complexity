@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+<style>
+
+  /* .navbar {
+      display: none;
+    } */
+
+  .jumbotron {
+    margin-bottom: 0px;
+  }
+
+  .p-70 {
+    padding: 0px 70px !important;
+  }
+
+  .px-20 {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+
+  table {
+    border: none;
+  }
+
+  td {
+    border: 1px solid lightgray;
+  }
+
+  tr {
+    border: 1px solid lightgrey !important;
+  }
+
+  tr:nth-child(odd) {background: rgb(237, 237, 237)}
+  tr:nth-child(even) {background: #FFF}
+
+  table > tbody > tr > td:not(:nth-child(9)):not(:nth-child(12)):not(:nth-child(13)),
+  table > thead > tr > th:not(:nth-child(9)):not(:nth-child(12)):not(:nth-child(13))
+
+  {
+    display: none;
+  }
+
+  td {
+    padding: 5px !important;
+  }
+
+  table > thead > tr {
+    border: none !important;
+    background-color: transparent !important;
+  }
+
+  th {
+    color: #4e4e4e;
+    padding: 5px 9px 4px 9px !important;
+    border: none;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+</style>
+
+  <!-- <div class = "container theme-showcase" role ="main"> -->
+  <div class="jumbotron" style="min-height: calc(100vh -  67px); margin: 15px 0px">
+    <div class="text-center">
+      <h1>🏆</h1>
+      <h2>Leaderboard</h2>
+      <hr class="my-4">
+      <p style="max-width: 400px; margin-left: auto; margin-right: auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <a href="/experiment" onclick="reset_timer()">
+        Restart Experiment</a>
+      {% if current_user.is_anonymous %}
+      {% else %}
+      or <a href="{{ url_for('logout') }}">  Logout</a>
+      {% endif %}
+      <hr class="my-4">
+      <!-- <p>The results of your experiment are below:</p> -->
+        <div class="row" style="margin-bottom: auto; margin-top: auto">
+          <div style="display: inline-flex;">
+            <div style="display: inline-block; margin: 10px">
+              <!-- <h3 align="left">Your results:</h3> -->
+                
+              <div class="panel panel-default" style="padding:20px; display: inline-block;">
+                <!-- <p>The results of your experiment are below:</p> -->
+                <leaderboard></leaderboard>
+              </div>
+            </div>
+
+        </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+
+function reset_timer() {
+  startTime = new Date();
+  window.localStorage.setItem('startTime', startTime);
+  return startTime;
+}
+ 
+fetch("../static/leaderboard.htm")
+.then(response => {
+  return response.text()
+})
+.then(data => {
+  document.querySelector("leaderboard").innerHTML = data;
+});
+
+history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+
+</script>
+
+  {% endblock %}
