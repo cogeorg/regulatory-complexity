@@ -17,8 +17,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-@app.route('https://regulatory-complexity.herokuapp.com/')
-@app.route('https://regulatory-complexity.herokuapp.com/index')
+@app.route('/')
+@app.route('/index')
 #@login_required
 def index():
     return render_template('index.html')
@@ -36,7 +36,7 @@ def add_header(r):
     r.headers['Cache-Control'] = 'public, max-age=0'
     return r
 
-@app.route('https://regulatory-complexity.herokuapp.com/login', methods = ['GET', 'POST'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('accept_rules'))
@@ -53,7 +53,7 @@ def login():
         return redirect(url_for('accept_rules'))
     return render_template('login.html', title = "Sign in", form = form)
 
-@app.route('https://regulatory-complexity.herokuapp.com/register', methods=["GET", "POST"])
+@app.route('/register', methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
         flash('You are already logged in!')
@@ -68,7 +68,7 @@ def register():
         return redirect(url_for("login"))
     return render_template("register.html", title = "Register", form=form)
 
-@app.route('https://regulatory-complexity.herokuapp.com/accept_rules', methods=["GET", "POST"])
+@app.route('/accept_rules', methods=["GET", "POST"])
 def accept_rules():
     if not current_user.is_authenticated:
         return redirect(url_for("register"))
@@ -78,7 +78,7 @@ def accept_rules():
     return render_template("accept_rules.html", title = "Rules", form=form)
 
 
-@app.route('https://regulatory-complexity.herokuapp.com/return-excel/')
+@app.route('/return-excel/')
 def return_excel():
     name = 'excel_template.xlsx'
     response = send_file('./static/excel_template.xlsx', as_attachment=True)
@@ -88,12 +88,12 @@ def return_excel():
 
     return response
 
-@app.route("https://regulatory-complexity.herokuapp.com/rules/")
+@app.route("/rules/")
 def rules():
     return render_template("rules.html")
 
-@app.route('https://regulatory-complexity.herokuapp.com/experiment', methods=["GET", "POST"])
-@app.route('https://regulatory-complexity.herokuapp.com/experiment/<int:n_reg>', methods=["GET", "POST"])
+@app.route('/experiment', methods=["GET", "POST"])
+@app.route('/experiment/<int:n_reg>', methods=["GET", "POST"])
 @login_required
 def experiment(n_reg=1, Score=0):
     if not current_user.is_authenticated:
@@ -155,7 +155,7 @@ def experiment(n_reg=1, Score=0):
 
 
 
-@app.route('https://regulatory-complexity.herokuapp.com/endpage')
+@app.route('/endpage')
 def endpage():
 
     headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
@@ -172,7 +172,7 @@ def endpage():
     return render_template('endpage.html', table=table)
 
 
-@app.route('https://regulatory-complexity.herokuapp.com/leaderboard')
+@app.route('/leaderboard')
 def leaderboard():
 
     headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
@@ -181,7 +181,7 @@ def leaderboard():
 
     return render_template('leaderboard.html', table=table)
 
-@app.route('https://regulatory-complexity.herokuapp.com/logout')
+@app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
