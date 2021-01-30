@@ -16,6 +16,8 @@ python-dotenv = "*"
 gunicorn = "*"
 psycopg2 = "*"
 email_validator = "*"
+pandas = "*"
+
 
 [requires]
 python_version = "3.8"
