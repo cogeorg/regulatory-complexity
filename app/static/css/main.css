@@ -1,0 +1,83 @@
+h1 {
+  font-size: 50px !important; 
+}
+
+p {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 23px !important;
+}
+
+.jumbotron p {
+  font-size: 18px;
+  font-weight: 400 !important;
+  line-height: 23px !important;
+}
+
+.help-block {
+  font-size: 14px !important;
+}
+
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+  border-radius: 0px;
+}
+
+.form-control {
+  border-radius: 0px;
+}
+
+.navbar-default {
+  background-color: transparent;
+  border-color: none;
+}
+
+.navbar {
+  margin-bottom: -15px;
+  border: 1px solid transparent;
+}
+
+.row {
+  margin: 0 0 40px 0;
+}
+
+#submit {
+  float:right;
+}
+
+.regulation {
+  height: 301px;
+  padding: 36px 20px 20px 0px;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 23px !important;
+}
+
+td {
+  padding: 1px 7px !important;
+  overflow-wrap: normal;
+}
+
+th {
+  padding: 4px !important;
+  padding-bottom: 5px !important
+}
+
+#correctanswer {
+  display: none !important;
+}
+
+
+#n_reg {
+  display: none !important;
+}
+
+.panel-info {
+  border-color: #e1e1e1 !important;
+}
+
+.panel {
+  border-radius: 1px !important;
+}
