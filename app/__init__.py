@@ -9,7 +9,7 @@ Created on Fri May 17 16:00:21 2019
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
-  # from flask_migrate import Migrate
+from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 
