@@ -6,8 +6,8 @@ Created on Fri May 17 16:00:21 2019
 @author: jane
 """
 
-from .commands import create_tables
 from flask import Flask
+
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -23,6 +23,11 @@ app.config.from_object(Config)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+@click.command(name='create_tables')
+@with_appcontext
+def create_tables():
+    db.create_all()
 
 bootstrap = Bootstrap(app)
 
