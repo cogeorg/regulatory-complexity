@@ -15,6 +15,7 @@ flask-login = "*"
 python-dotenv = "*"
 gunicorn = "*"
 psycopg2 = "*"
+email_validator = "*"
 
 [requires]
 python_version = "3.8"
