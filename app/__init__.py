@@ -14,6 +14,7 @@ from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 
+
 app = Flask(__name__)
 
 app.config.from_object(Config)
@@ -24,15 +25,9 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-@click.command(name='create_tables')
-@with_appcontext
-def create_tables():
-    db.create_all()
-
 bootstrap = Bootstrap(app)
 
 login = LoginManager(app)
 login.login_view = 'login'
-
 
 from app import routes, models

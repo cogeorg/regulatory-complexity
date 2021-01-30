@@ -48,3 +48,5 @@ class CorrectAnswer(db.Model):
 
     def __repr__(self):
         return '<CorrectAnswer {}'.format(self.correctanswer)
+
+db.create_all()
