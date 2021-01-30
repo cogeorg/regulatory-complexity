@@ -6,6 +6,7 @@ Created on Fri May 17 16:00:21 2019
 @author: jane
 """
 
+from .commands import create_tables
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
