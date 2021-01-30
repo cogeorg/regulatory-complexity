@@ -7,6 +7,9 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+flask-bootstrap = "*"
+flask-migrate = "*"
+flask-wtf = "*"
 flask-sqlalchemy = "*"
 flask-login = "*"
 python-dotenv = "*"
@@ -14,4 +17,4 @@ gunicorn = "*"
 psycopg2 = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
