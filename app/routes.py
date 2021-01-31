@@ -100,7 +100,9 @@ def experiment(n_reg=1, Score=0):
         return redirect(url_for("login"))
 
     user_id = current_user.id
-    correctanswer = CorrectAnswer.query.filter_by(id=n_reg).first()
+    headers = ['question','answer']
+    df = pd.read_csv("./app/static/correct_answers.csv", usecols=[0,1], names=headers, header=0)
+    correctanswer = (str(df.loc[df['question'] == n_reg]['answer'].values)[1:-1])
     # correctanswer = correctanswer.correctanswer
     user_experiments = []
     for line in open("./app/static/users/user_" + str(user_id) + "_experiments.csv"):
