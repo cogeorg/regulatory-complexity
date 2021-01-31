@@ -101,7 +101,7 @@ def experiment(n_reg=1, Score=0):
 
     user_id = current_user.id
     correctanswer = CorrectAnswer.query.filter_by(id=n_reg).first()
-    correctanswer = correctanswer.correctanswer
+    # correctanswer = correctanswer.correctanswer
     user_experiments = []
     for line in open("./app/static/users/user_" + str(user_id) + "_experiments.csv"):
         user_experiments.append(line.strip("\n"))
