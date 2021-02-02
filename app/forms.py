@@ -30,7 +30,7 @@ class RegistrationForm(FlaskForm):
 
 class RulesForm(FlaskForm):
     rules = BooleanField("I have read and understood the rules", validators= [DataRequired()])
-    excel = BooleanField("I have tested the template and can open it", validators=[DataRequired()])
+    # excel = BooleanField("I have tested the template and can open it", validators=[DataRequired()])
     submit = SubmitField("Continue", render_kw={"onclick": "reset_timer()"})
 
 class PracticeForm(FlaskForm):
