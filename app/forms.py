@@ -35,7 +35,7 @@ class RulesForm(FlaskForm):
 
 class PracticeForm(FlaskForm):
     # answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
-    answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:")
+    answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", default="Practice")
     n_reg  = HiddenField(id="n_reg")
     # def validate(self):
     #     rv = FlaskForm.validate(self)

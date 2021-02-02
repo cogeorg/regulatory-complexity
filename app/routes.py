@@ -64,7 +64,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('You are now df registered user!')
+        flash('You are now a registered user!')
         return redirect(url_for("login"))
     return render_template("register.html", title = "Register", form=form)
 
@@ -102,7 +102,10 @@ def experiment(n_reg=1, Score=0):
     user_id = current_user.id
     headers = ['question','answer']
     df = pd.read_csv("./app/static/correct_answers.csv", usecols=[0,1], names=headers, header=0)
-    correctanswer = (str(df.loc[df['question'] == n_reg]['answer'].values)[1:-1])
+    # correctanswer = (str(df.loc[df['question'] == n_reg]['answer'].values)[1:1])
+    correctanswer = df.at[n_reg-1,'answer' ]
+    print(correctanswer)
+
     # correctanswer = correctanswer.correctanswer
     user_experiments = []
     for line in open("./app/static/users/user_" + str(user_id) + "_experiments.csv"):
@@ -163,7 +166,7 @@ def endpage():
     headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
     df = pd.read_csv("./app/static/submissions.csv", usecols=[0,3,5,6], names=headers)
 
-    top = df.head(0)
+    top = df.head(1)
     bottom = df.tail(10)
     concatenated = pd.concat([top,bottom])
     concatenated.reset_index(inplace=True, drop=True)
