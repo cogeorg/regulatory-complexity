@@ -17,6 +17,13 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
+@app.before_request
+def before_request():
+    if not request.is_secure and app.env != "development":
+        url = request.url.replace("http://", "https://", 1)
+        code = 301
+        return redirect(url, code=code)
+
 @app.route('/')
 @app.route('/index')
 #@login_required
