@@ -272,7 +272,7 @@
 
 <script>
 
-// 1. Set the correct answer - This is needed for Practice Answer
+// 1. Set the correct answer - This is needed for Practice Answer | No longer needed!
 
 theCorrectAnswer = 1;
 
@@ -322,35 +322,6 @@ if ((target.hasAttribute('data-dismiss') && target.getAttribute('data-dismiss') 
 }, false);
 
 
-// 6. This function resets the timer
-
-function reset_timer() {
-  startTime = new Date();
-  window.localStorage.setItem('startTime', startTime);
-  return startTime;
-}
-
-// 7. This function stops user from being able to go back.
-
-history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-        history.go(1);
-    };
-
-
-// 8. This function fetches the timestamp in the browsers localstorage so that if a user refreshes it will continue its count.
-
-document.addEventListener('DOMContentLoaded', function(event) { 
-  // get timestamp
-startTime = new Date(window.localStorage.getItem('startTime') || resetStartTime());
-// start timer
-  
-  window.setInterval(function() {
-    var secsDiff = new Date().getTime() - startTime.getTime();
-    document.getElementById('chronometer').innerText = Math.floor(secsDiff / 1000) + ' seconds' ;
-  }, 1000);
-});
-
 // 9. This function outputs the regulation
 
 fetch("../static/exercises/" + {{user_experiment_id}} + "/regulation_"+ {{user_experiment_id}}+".html")
@@ -371,6 +342,33 @@ fetch("../static/table.htm")
     document.querySelector("balancesheet").innerHTML = data;
   });
 
+
+// 6. This function resets the timer
+
+function reset_timer() {
+  startTime = new Date();
+  window.localStorage.setItem('startTime', startTime);
+  return startTime;
+}
+
+// 7. This function stops user from being able to go back.
+
+history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+
+// 8. This function fetches the timestamp in the browsers localstorage so that if a user refreshes it will continue its count.
+
+document.addEventListener('DOMContentLoaded', function(event) { 
+// get timestamp
+startTime = new Date(window.localStorage.getItem('startTime') || resetStartTime());
+// start timer
+  window.setInterval(function() {
+    var secsDiff = new Date().getTime() - startTime.getTime();
+    document.getElementById('chronometer').innerText = Math.floor(secsDiff / 1000) + ' seconds' ;
+  }, 1000);
+});
 
 </script>
 
