@@ -14,6 +14,7 @@ from flask_login import login_required, logout_user
 from werkzeug.urls import url_parse
 import csv
 import pandas as pd  
+import random
 import numpy as np
 from datetime import datetime
 
@@ -107,10 +108,16 @@ def experiment(n_reg=1, Score=0):
 
     user_id = current_user.id
 
-    # correctanswer = correctanswer.correctanswer
-    user_experiments = []
-    for line in open("./app/static/users/user_" + str(user_id) + "_experiments.csv"):
-        user_experiments.append(line.strip("\n"))
+    if n_reg == 1 :
+        random_exp = 1
+        with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
+            file.write(str(random_exp) + "\n")
+
+    for line in open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv"):
+        random_user_num = (line.strip("\n"))
+        user_experiments = []
+        for line in open("./app/static/users/user_" + str(random_user_num) + "_experiments.csv"):
+            user_experiments.append(line.strip("\n"))
     
     headers = ['question','answer']
     df = pd.read_csv("./app/static/correct_answers.csv", usecols=[0,1], names=headers, header=0)
@@ -137,6 +144,14 @@ def experiment(n_reg=1, Score=0):
         form = SubmissionForm()
  
     if form.validate_on_submit():
+
+        if n_reg == 1 :
+            random_exp = (random.randint(0,1000))
+            with open("user_" + str(user_id) + "_experiments.csv", "w") as file:
+                file.write(str(random_exp) + "\n")
+        else:
+            print ("not 9 yet")
+
         submission = Submission(answer = form.answer.data, correctanswer = correctanswer , verifyanswer = bool((correctanswer == form.answer.data)), regulation = user_experiments[n_reg-1], balance_sheet = user_experiments[n_reg-1], user_id = current_user.id)
         spenttime = ((datetime.utcnow() - session['start_time']))
 
@@ -175,6 +190,12 @@ def experiment(n_reg=1, Score=0):
     # print(user_experiments)
     # print(n_reg)
 
+    # if n_reg == 1:
+    #     user_experiment_number = 0
+    # else: 
+    #     user_experiment_number = user_experiments[n_reg-1]
+
+    # print(user_experiments[n_reg-1])
     
     return render_template('experiment.html', form = form, user_experiment_id = user_experiments[n_reg-1], n_reg = n_reg, table = table)
 
