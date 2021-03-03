@@ -106,23 +106,31 @@ def experiment(n_reg=1, Score=0):
         return redirect(url_for("login"))
 
     user_id = current_user.id
-    headers = ['question','answer']
-    df = pd.read_csv("./app/static/correct_answers.csv", usecols=[0,1], names=headers, header=0)
-    # correctanswer = (str(df.loc[df['question'] == n_reg]['answer'].values)[1:1])
-    correctanswer = df.at[n_reg-1,'answer' ]
-    print(correctanswer)
 
     # correctanswer = correctanswer.correctanswer
     user_experiments = []
     for line in open("./app/static/users/user_" + str(user_id) + "_experiments.csv"):
         user_experiments.append(line.strip("\n"))
+    
+    headers = ['question','answer']
+    df = pd.read_csv("./app/static/correct_answers.csv", usecols=[0,1], names=headers, header=0)
+    # correctanswer = (str(df.loc[df['question'] == n_reg]['answer'].values)[1:1])
 
+    print(n_reg)
+    print(user_experiments)
+    answer_key = user_experiments[n_reg-1]
+    print(answer_key)
+    answer_key = (int(answer_key))
+    correctanswer = df.at[answer_key,'answer' ]
+    print(correctanswer)
+    
     df = pd.read_csv("./app/static/table_template.csv") 
     df.to_html("./app/static/table.htm", na_rep="", index=False, index_names=False, col_space=60)
     df.style.set_properties(**{'text-align': 'right'})
     table = df.to_html()
 
     form = SubmissionForm()
+
     if n_reg == 1:
         form = PracticeForm()
     else: 
@@ -161,6 +169,12 @@ def experiment(n_reg=1, Score=0):
             return redirect(url_for("endpage"))
 
     session['start_time'] = datetime.utcnow()
+    
+    #print(user_experiments[n_reg-1])
+    # print(correctanswer)
+    # print(user_experiments)
+    # print(n_reg)
+
     
     return render_template('experiment.html', form = form, user_experiment_id = user_experiments[n_reg-1], n_reg = n_reg, table = table)
 
