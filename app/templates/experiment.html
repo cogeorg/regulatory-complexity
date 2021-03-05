@@ -212,12 +212,12 @@
       <div class="col-lg-7 vcenter" style="padding: 0px">
         <h3 align="left">Balance Sheet</h3>
         <div class="panel panel-default" style="padding:20px; min-height: 510px">
-          <!-- <img src="{{ url_for('static', filename='balance_sheet1.png') }}" width="100%" alt="User balance sheet"/> -->
-          <balancesheet></balancesheet>
+          <img src="{{ url_for('static', filename='balance_sheet.svg') }}" width="100%" alt="User balance sheet"/>
+          <!-- <balancesheet></balancesheet> -->
         </div>
       </div>
       <div class="col-lg-5 vcenter">
-        <h3 align="left">Regulation</h3>
+        <h3 align="left">Regulation - {{user_experiment_id}} </h3>
         <div class="panel panel-default" style="margin-bottom: 17px; min-height: 303px">
           <!-- <img src="{{ url_for('static', filename='regulation1.png') }}" width="100%" alt="User Regulation" /> -->
           <regulation></regulation>
