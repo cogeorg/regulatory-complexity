@@ -29,7 +29,7 @@
   body > div > div:nth-child(2) > div:nth-child(1), body > div.container-fluid > div:nth-child(2) > div:nth-child(3) {
     margin: 10px auto;
   }
-  
+
   body > div > div.jumbotron {
     margin-bottom: 0px;
   }
@@ -66,10 +66,10 @@
   table > tbody > tr:nth-child(1) > td {
     padding-top: 20px !important;
   }
-  
+
   table {
     border: #ffffff;
-    font-size: 13px; 
+    font-size: 13px;
     width: 100%;
   }
 
@@ -81,7 +81,7 @@
     color: white;
   }
 
-  td, th { 
+  td, th {
     border: 1px solid white;
   }
 
@@ -176,19 +176,19 @@
 
   <div class="col-lg-2" align="right">
       <button onclick="document.getElementById('id01').style.display='block'" class="btn btn-info btn-small" style="background-color: #003A70; border-radius: 0px; border: none">Rules</button>
-  </div> 
+  </div>
 
   <div id="id01" class="w3-modal">
     <div class="w3-modal-content">
       <div style="background-color: white; padding: 40px; max-width: 900px; margin-left: auto; margin-right: auto;">
 
-        In the <i>Regulation</i> column on the left hand side of the screen you find a list of regulations applicable to
-        the Balance Sheet on the right hand side of the screen. Evaluate how much <b> regulatory capital</b> the
+        In the <i>Regulation</i> column on the right hand side of the screen you find a list of regulations applicable to
+        the Balance Sheet on the left hand side of the screen. Evaluate how much <b> regulatory capital</b> the
         hypothetical bank, based in France (which is in the European Union), is required to have to stay solvent
         according to the rules given in the Regulation column. Enter your answer (in EUR) as fast as possible in the
         <b>Enter answer</b> field and click 'Save and continue'.<br>
         <br>
-        In the <i>Balance Sheet</i> column on the right of the screen you see the asset side of a hypothetical bank.
+        In the <i>Balance Sheet</i> column on the left of the screen you see the asset side of a hypothetical bank.
         Each row is an entry on the balance sheet and the <b>Type</b> denotes what kind of entry it is. <b>Amount</b> is
         the amount, <b>Denomination</b> is the currency in which the amount is denominated (including whether it is in
         national or foreign currency), <b>Maturity</b> denotes the remaining maturity of the asset in years,
@@ -222,8 +222,8 @@
           <!-- <img src="{{ url_for('static', filename='regulation1.png') }}" width="100%" alt="User Regulation" /> -->
           <regulation></regulation>
         </div>
-        <div class="panel panel-default" style="padding: 20px; padding-bottom: 20px; min-height: 190px"> 
-          
+        <div class="panel panel-default" style="padding: 20px; padding-bottom: 20px; min-height: 190px">
+
           <div class="col-3 mb-1 mb-lg-0">
             <div id="practiceOver">
               {{ wtf.quick_form(form) }}
@@ -332,7 +332,7 @@ fetch("../static/exercises/" + {{user_experiment_id}} + "/regulation_"+ {{user_e
     document.querySelector("regulation").innerHTML = data;
   });
 
-// 10. This function outputs the static regulation table. Regulation can be set in table_template.csv. The csv will be converted into table.htm on the fly. 
+// 10. This function outputs the static regulation table. Regulation can be set in table_template.csv. The csv will be converted into table.htm on the fly.
 
 fetch("../static/table.htm")
   .then(response => {
@@ -360,7 +360,7 @@ history.pushState(null, null, location.href);
 
 // 8. This function fetches the timestamp in the browsers localstorage so that if a user refreshes it will continue its count.
 
-document.addEventListener('DOMContentLoaded', function(event) { 
+document.addEventListener('DOMContentLoaded', function(event) {
 // get timestamp
 startTime = new Date(window.localStorage.getItem('startTime') || resetStartTime());
 // start timer
