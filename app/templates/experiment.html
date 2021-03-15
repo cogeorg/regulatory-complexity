@@ -230,7 +230,7 @@
             </div>
           </div>
           <div id="practiceStart">
-            <label class="control-label" for="answer">Enter the bank's total risk weighted assets for this regulation:</label>
+            <label class="control-label" for="answer">Enter the bank's total risk weighted assets for this regulation (in kEUR, i.e. "10,000" is "10.0" or simply "10"):</label>
             <input class="form-control" id="practiceAnswer" type="text" value="">
             <button class="btn btn-default" data-target="practiceModal" data-toggle="modal" style="position: absolute;
             right: 0;
@@ -257,13 +257,17 @@
 
   <div id="practiceModal" class="modal">
     <div id="modalWrong" class="modal-window">
-      <h3>Incorrect Answer!</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <h3>Sorry, but this is not correct.</h3>
+      <p>The correct answer is <b>38.0</b>. You can see this as follows. Start with the first rule, that assigns 0.0% risk-weight. It applies to Bonds issued by the French State, as these are <i>"Claims issued by the public sector"</i> and to Shares, as these are <i>"Other Capital Instrument"</i>. Then take the second rule, which assigns 30% risk weight to Mortgatge loans. Next, take the third rule, which assigns a 40% risk weight to all <i>Other Investment</i>. It applies to Bonds issued by Private firms, and Corporate loans. The second-to-last rule assigns a risk weight of 70% and applies to Fixed assets that are Real estate. All remaining positions that have not yet been assigned a weight get 100%, which applies to Cash and Equipment.<br>
+      <br>
+      If you multiply the EUR values for each of these assets with their respective risk-weight and sum everything up, you obtain the 38,000EUR risk-weighted capital. Note that risk-weights are entered in kEUR, i.e. you can write either <i>38.0</i> or <i>38</i>.</p>
       <div class="align-wtf-modal">{{ wtf.quick_form(form) }}</div>
     </div>
     <div id="modalCorrect" class="modal-window">
-      <h3>Correct Answer!</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <h3>Excellent, this is correct.</h3>
+      <p>The correct answer is <b>38.0</b>. You can see this as follows. Start with the first rule, that assigns 0.0% risk-weight. It applies to Bonds issued by the French State, as these are <i>"Claims issued by the public sector"</i> and to Shares, as these are <i>"Other Capital Instrument"</i>. Then take the second rule, which assigns 30% risk weight to Mortgatge loans. Next, take the third rule, which assigns a 40% risk weight to all <i>Other Investment</i>. It applies to Bonds issued by Private firms, and Corporate loans. The second-to-last rule assigns a risk weight of 70% and applies to Fixed assets that are Real estate. All remaining positions that have not yet been assigned a weight get 100%, which applies to Cash and Equipment.<br>
+      <br>
+      If you multiply the EUR values for each of these assets with their respective risk-weight and sum everything up, you obtain the 38,000EUR risk-weighted capital. Note that risk-weights are entered in kEUR, i.e. you can write either <i>38.0</i> or <i>38</i>.</p>
       <div class="align-wtf-modal">{{ wtf.quick_form(form) }}</div>
   </div>
 </div>
