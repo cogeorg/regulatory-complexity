@@ -192,7 +192,7 @@
         Each row is an entry on the balance sheet and the <b>Type</b> denotes what kind of entry it is. <b>Amount</b> is
         the amount, <b>Denomination</b> is the currency in which the amount is denominated (including whether it is in
         national or foreign currency), <b>Maturity</b> denotes the remaining maturity of the asset in years,
-        <b>Counterparty of issuer</b> indicates who issued the asset, and the <b>Guarantor</b> indicates if another
+        <b>Counterparty or issuer</b> indicates who issued the asset, and the <b>Guarantor</b> indicates if another
         party guarantees the asset.<br><br>
 
         <div style="height: 20px">
@@ -210,7 +210,7 @@
   <div class="jumbotron p-70 px-20" style="height: calc(100vh - 88px); display: flex; margin: 0 20px; border-radius: 5px;">
     <div class="row justify-content-left" style="margin-bottom: auto; margin-top: auto; width: 100%;">
       <div class="col-lg-7 vcenter" style="padding: 0px">
-        <h3 align="left">Balance Sheet</h3>
+        <h3 align="left">Balance Sheet (please note that 1USD = 1EUR in our example)</h3>
         <div class="panel panel-default" style="padding:20px; min-height: 510px">
           <img src="{{ url_for('static', filename='balance_sheet.svg') }}" width="100%" alt="User balance sheet"/>
           <!-- <balancesheet></balancesheet> -->
@@ -230,7 +230,7 @@
             </div>
           </div>
           <div id="practiceStart">
-            <label class="control-label" for="answer">Enter the bank's total risk weighted assets for this regulation (in kEUR, i.e. "10,000" is "10.0" or simply "10"):</label>
+            <label class="control-label" for="answer">Enter the bank's total risk weighted assets for this regulation (in kEUR, i.e. "10000" is "10.0" or simply "10" - Note that the decimal point is accepted, a comma is not):</label>
             <input class="form-control" id="practiceAnswer" type="text" value="">
             <button class="btn btn-default" data-target="practiceModal" data-toggle="modal" style="position: absolute;
             right: 0;
@@ -258,14 +258,14 @@
   <div id="practiceModal" class="modal">
     <div id="modalWrong" class="modal-window">
       <h3>Sorry, but this is not correct.</h3>
-      <p>The correct answer is <b>38.0</b>. You can see this as follows. Start with the first rule, that assigns 0.0% risk-weight. It applies to Bonds issued by the French State, as these are <i>"Claims issued by the public sector"</i> and to Shares, as these are <i>"Other Capital Instrument"</i>. Then take the second rule, which assigns 30% risk weight to Mortgatge loans. Next, take the third rule, which assigns a 40% risk weight to all <i>Other Investment</i>. It applies to Bonds issued by Private firms, and Corporate loans. The second-to-last rule assigns a risk weight of 70% and applies to Fixed assets that are Real estate. All remaining positions that have not yet been assigned a weight get 100%, which applies to Cash and Equipment.<br>
+      <p>The correct answer is <b>38.0</b>. You can see this as follows. Start with the first rule, that assigns 0.0% risk-weight. It applies to Bonds issued by the French State, as these are <i>"Claims issued by the public sector"</i> and to Shares, as these are <i>"Other Capital Instrument"</i>. Here, the issue is that shares are denoted in USD, so that these need to be converted into EUR first, using an exchange rate of 1EUR = 1USD for simplicity. Consequently, the risk-weighted capital for these two positions is (10000EUR*0% + 10000USD*1EUR/USD*0%) = 0EUR. Then take the second rule, which assigns 30% risk weight to Mortgage loans, yielding 10000EUR*30% = 3000EUR. Next, take the third rule, which assigns a 40% risk weight to all <i>Other Investment</i>. It applies to Bonds issued by Private firms, and Corporate loans, yielding (10000EUR*40% + 10000EUR*40%) = 8000EUR. The second-to-last rule assigns a risk weight of 70% and applies to Fixed assets that are Real estate. This results in 10000EUR*70% = 7000EUR. All remaining positions that have not yet been assigned a weight get 100%, which applies to Cash and Equipment, resulting in (10000EUR*100% + 10000EUR*100%) = 20000EUR.<br>
       <br>
       If you multiply the EUR values for each of these assets with their respective risk-weight and sum everything up, you obtain the 38,000EUR risk-weighted capital. Note that risk-weights are entered in kEUR, i.e. you can write either <i>38.0</i> or <i>38</i>.</p>
       <div class="align-wtf-modal">{{ wtf.quick_form(form) }}</div>
     </div>
     <div id="modalCorrect" class="modal-window">
       <h3>Excellent, this is correct.</h3>
-      <p>The correct answer is <b>38.0</b>. You can see this as follows. Start with the first rule, that assigns 0.0% risk-weight. It applies to Bonds issued by the French State, as these are <i>"Claims issued by the public sector"</i> and to Shares, as these are <i>"Other Capital Instrument"</i>. Then take the second rule, which assigns 30% risk weight to Mortgatge loans. Next, take the third rule, which assigns a 40% risk weight to all <i>Other Investment</i>. It applies to Bonds issued by Private firms, and Corporate loans. The second-to-last rule assigns a risk weight of 70% and applies to Fixed assets that are Real estate. All remaining positions that have not yet been assigned a weight get 100%, which applies to Cash and Equipment.<br>
+      <p>The correct answer is <b>38.0</b>. You can see this as follows. Start with the first rule, that assigns 0.0% risk-weight. It applies to Bonds issued by the French State, as these are <i>"Claims issued by the public sector"</i> and to Shares, as these are <i>"Other Capital Instrument"</i>. Here, the issue is that shares are denoted in USD, so that these need to be converted into EUR first, using an exchange rate of 1EUR = 1USD for simplicity. Consequently, the risk-weighted capital for these two positions is (10000EUR*0% + 10000USD*1EUR/USD*0%) = 0EUR. Then take the second rule, which assigns 30% risk weight to Mortgage loans, yielding 10000EUR*30% = 3000EUR. Next, take the third rule, which assigns a 40% risk weight to all <i>Other Investment</i>. It applies to Bonds issued by Private firms, and Corporate loans, yielding (10000EUR*40% + 10000EUR*40%) = 8000EUR. The second-to-last rule assigns a risk weight of 70% and applies to Fixed assets that are Real estate. This results in 10000EUR*70% = 7000EUR. All remaining positions that have not yet been assigned a weight get 100%, which applies to Cash and Equipment, resulting in (10000EUR*100% + 10000EUR*100%) = 20000EUR.<br>
       <br>
       If you multiply the EUR values for each of these assets with their respective risk-weight and sum everything up, you obtain the 38,000EUR risk-weighted capital. Note that risk-weights are entered in kEUR, i.e. you can write either <i>38.0</i> or <i>38</i>.</p>
       <div class="align-wtf-modal">{{ wtf.quick_form(form) }}</div>

@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
@@ -69,7 +70,9 @@
       <h1>🏆</h1>
       <h2>Leaderboard</h2>
       <hr class="my-4">
-      <p style="max-width: 400px; margin-left: auto; margin-right: auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <p style="max-width: 400px; margin-left: auto; margin-right: auto">Thank you for completing the experiment. This leaderboard shows you how many questions you and others answered correctly. How well did you do?<br>
+      <br>
+      If you have any feedback or comments, please send it to <a href="mailto:co-pierre.georg@uct.ac.za">co-pierre.georg@uct.ac.za</a>.</p>
       <a href="/experiment" onclick="reset_timer()">
         Restart Experiment</a>
       {% if current_user.is_anonymous %}
@@ -82,7 +85,7 @@
           <div style="display: inline-flex;">
             <div style="display: inline-block; margin: 10px">
               <!-- <h3 align="left">Your results:</h3> -->
-                
+
               <div class="panel panel-default" style="padding:20px; display: inline-block;">
                 <!-- <p>The results of your experiment are below:</p> -->
                 <leaderboard></leaderboard>
@@ -102,7 +105,7 @@ function reset_timer() {
   window.localStorage.setItem('startTime', startTime);
   return startTime;
 }
- 
+
 fetch("../static/leaderboard.htm")
 .then(response => {
   return response.text()
