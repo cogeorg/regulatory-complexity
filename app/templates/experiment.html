@@ -206,7 +206,7 @@
   <div class="jumbotron p-70 px-20" style="height: calc(100vh - 88px); display: flex; margin: 0 20px; border-radius: 5px;">
     <div class="row justify-content-left" style="margin-bottom: auto; margin-top: auto; width: 100%;">
       <div class="col-lg-7 vcenter" style="padding: 0px">
-        <h3 align="left">Balance Sheet (please note that 1USD = 1EUR in our example)</h3>
+        <h3 align="left">Balance Sheet (please note that all Amounts are in Million, and that 1USD = 1EUR)</h3>
         <div class="panel panel-default" style="padding:20px; min-height: 510px">
           <img src="{{ url_for('static', filename='balance_sheet.svg') }}" width="100%" alt="User balance sheet"/>
           <!-- <balancesheet></balancesheet> -->
@@ -226,7 +226,7 @@
             </div>
           </div>
           <div id="practiceStart">
-            <label class="control-label" for="answer">Enter the bank's total risk weighted assets for this regulation (in kEUR, i.e. "10000" is "10.0" or simply "10" - Note that the decimal point is accepted, a comma is not):</label>
+            <label class="control-label" for="answer">Enter the bank's total risk weighted assets for this regulation in Million EUR. Using a decimal point is accepted (i.e. writing "10.0"), but a comma is not:</label>
             <input class="form-control" id="practiceAnswer" type="text" value="">
             <button class="btn btn-default" data-target="practiceModal" data-toggle="modal" style="position: absolute;
             right: 0;
