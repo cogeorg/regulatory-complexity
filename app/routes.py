@@ -4,7 +4,9 @@
 Created on Fri May 17 16:10:43 2019
 
 @author: jane
+
 """
+from flask import Flask, Response
 from flask import render_template, flash, redirect, request, url_for, send_file, session
 from flask_login import current_user, login_user
 from app.models import User, Submission, CorrectAnswer
@@ -204,6 +206,7 @@ def endpage():
     return render_template('endpage.html', table=table)
 
 
+
 @app.route('/leaderboard')
 def leaderboard():
 
@@ -217,3 +220,25 @@ def leaderboard():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/download-csv')
+def downloadcsv():
+    return '''
+        <html><body>
+        <a href="/getsubmissionscsv">Download Submissions</a>
+        </body></html>
+        '''
+
+@app.route("/getsubmissionscsv")
+def getPlotCSV():
+    with open("./app/static/submissions.csv") as fp:
+        csv = fp.read()
+
+    return Response(
+        csv,
+        mimetype="text/csv",
+        headers={"Content-disposition":
+                 "attachment; filename=submissions.csv"})
+
+
