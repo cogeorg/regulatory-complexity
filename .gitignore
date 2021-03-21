@@ -19,3 +19,6 @@ __pycache__/
 
 # Selenim WebDriver
 chromedriver
+
+# files to be ignored
+./app/static/submissions.csv
