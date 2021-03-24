@@ -172,7 +172,7 @@ def experiment(n_reg=1, Score=0):
                 Score = df['Score'].iloc[-1]
                 Score = int(Score)
                 
-        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, submission.correctanswer, current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), Score ]
+        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, submission.correctanswer, current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), Score, random_user_num ]
         with open('./app/static/submissions.csv', "a") as f:
             writer = csv.writer(f)
             writer.writerow(row)
@@ -240,5 +240,3 @@ def getPlotCSV():
         mimetype="text/csv",
         headers={"Content-disposition":
                  "attachment; filename=submissions.csv"})
-
-
