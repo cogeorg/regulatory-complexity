@@ -116,7 +116,7 @@ def experiment(n_reg=1, Score=0):
             file.write(str(random_exp) + "\n")
 
     if n_reg == 2 :
-        random_exp = (random.randint(0,1000))
+        random_exp = (random.randint(0,9999))
         with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
             file.write(str(random_exp) + "\n")
 
