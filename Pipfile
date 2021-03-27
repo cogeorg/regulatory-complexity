@@ -17,6 +17,7 @@ gunicorn = "*"
 psycopg2 = "*"
 email_validator = "*"
 pandas = "*"
+gspread = "*"
 
 
 [requires]
