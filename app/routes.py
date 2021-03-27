@@ -20,6 +20,43 @@ import random
 import numpy as np
 from datetime import datetime
 
+import gspread
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+from oauth2client.service_account import ServiceAccountCredentials
+
+# define the scope
+scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+
+# add credentials to the account
+creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
+
+# authorize the clientsheet 
+client = gspread.authorize(creds)
+
+# get the instance of the Spreadsheet
+sheet = client.open('submissions')
+
+# get the first sheet of the Spreadsheet
+sheet_instance = sheet.get_worksheet(0)
+
+
+sheet_instance.col_count
+#print (sheet_instance.row_count)
+
+# get all the records of the data
+records_data = sheet_instance.get_all_records()
+
+# view the data
+#print(records_data)
+
+records_df = pd.DataFrame.from_dict(records_data)
+
+# view the top records
+# print(records_df.head())
+
+
 @app.before_request
 def before_request():
     if not request.is_secure and app.env != "development":
@@ -155,7 +192,11 @@ def experiment(n_reg=1, Score=0):
         submission = Submission(answer = form.answer.data, correctanswer = correctanswer , verifyanswer = bool((correctanswer == form.answer.data)), regulation = user_experiments[n_reg-1], balance_sheet = user_experiments[n_reg-1], user_id = current_user.id)
         spenttime = ((datetime.utcnow() - session['start_time']))
 
-        headers = ['Index','Regulation','balance_sheet','answer','true','correctanswer','user_id','Student ID','Username', 'Time Elapsed','Submission Time','Score']
+        # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score', 'Set']
+        
+        service = build('sheets', 'v4', credentials=creds)
+        spreadsheetId = "1gs3oq_1eCVSXdLhTfgcgv-iqkFqrChKySAZjAfrQMOQ"
+        range = "submissions!M:M"
         
         if (n_reg == 1):
             if (bool(correctanswer == form.answer.data)):
@@ -164,19 +205,34 @@ def experiment(n_reg=1, Score=0):
                 Score = 0
         else:
             if (bool(correctanswer == form.answer.data)):
-                df = pd.read_csv("./app/static/submissions.csv", names=headers)
-                Score = df['Score'].iloc[-1]
-                Score = int(Score) + 1   
+                rows = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range=range).execute().get('values')
+                last_row = rows[-1] if rows else None
+                last_row_id = len(rows)
+                Score = int(last_row[0])
+                Score = Score + 1 
             else:
-                df = pd.read_csv("./app/static/submissions.csv", names=headers)
-                Score = df['Score'].iloc[-1]
-                Score = int(Score)
+                rows = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range=range).execute().get('values')
+                last_row = rows[-1] if rows else None
+                last_row_id = len(rows)
+                Score = int(last_row[0])
+                Score = Score
                 
-        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, submission.correctanswer, current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), Score, random_user_num ]
-        with open('./app/static/submissions.csv', "a") as f:
-            writer = csv.writer(f)
-            writer.writerow(row)
-        f.close()
+        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, int(submission.correctanswer), current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), int(float(Score)), random_user_num ]
+        
+        service = build('sheets', 'v4', credentials=creds)
+        list = [row]
+        resource = {
+        "majorDimension": "ROWS",
+        "values": list
+        }
+
+        range = "submissions!A:Z"
+        service.spreadsheets().values().append(
+        spreadsheetId=spreadsheetId,
+        range=range,
+        body=resource,
+        valueInputOption="USER_ENTERED"
+        ).execute()
 
         if n_reg<=9:
             return redirect(url_for("experiment", n_reg=n_reg+1)) #+1))
@@ -192,7 +248,7 @@ def experiment(n_reg=1, Score=0):
 @app.route('/endpage')
 def endpage():
 
-    headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
+    headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score', 'Set']
     df = pd.read_csv("./app/static/submissions.csv", usecols=[0,3,5,6], names=headers)
 
     top = df.head(0)
@@ -205,12 +261,10 @@ def endpage():
 
     return render_template('endpage.html', table=table)
 
-
-
 @app.route('/leaderboard')
 def leaderboard():
 
-    headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
+    headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score', 'Set']
     df = pd.read_csv("./app/static/submissions.csv", parse_dates=[9], names = headers)
     table = df.loc[df['Index'] == 10].sort_values(by='Score', ascending=False).to_html("./app/static/leaderboard.htm", index=None)
 
