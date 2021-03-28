@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField, IntegerField, HiddenField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField, IntegerField, HiddenField, SelectField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 from app.models import CorrectAnswer
@@ -13,6 +13,14 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     student_id = StringField("Student ID", validators=[DataRequired()])
+    sex = StringField('Sex')
+    age = StringField('Age')
+    
+    education = SelectField('Education', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
+    year = StringField('Year of qualification completed')
+    institution = StringField('The name of Institution where qualification complete')
+    experience = SelectField('Professional Experience', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
+    years_experience = StringField('Years of Professional Experience')
     email = StringField('Email', validators = [DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password', message = 'not the same password')])

@@ -5,12 +5,20 @@ from flask_login import UserMixin
 from datetime import datetime
 
 class User(UserMixin, db.Model):
+    db.create_all()
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(64), index = True, unique = True)
     email = db.Column(db.String(120), index = True, unique = True)
     password_hash = db.Column(db.String(128))
     submissions = db.relationship('Submission', backref = 'author', lazy = 'dynamic')
     student_id = db.Column(db.String(64), index = True, unique = True)
+    sex = db.Column(db.String(64), index = True)
+    age = db.Column(db.String(64), index = True)
+    education = db.Column(db.String(64), index = True)
+    year = db.Column(db.String(64), index = True)
+    institution = db.Column(db.String(256), index = True)
+    experience = db.Column(db.String(128), index = True)
+    years_experience = db.Column(db.String(128), index = True)
 
     def __repr__(self) :
         return '<User {}>'.format(self.username)

@@ -100,13 +100,15 @@ def login():
     return render_template('login.html', title = "Sign in", form = form)
 
 @app.route('/register', methods=["GET", "POST"])
+
 def register():
     if current_user.is_authenticated:
         flash('You are already logged in!')
         return redirect(url_for('accept_rules'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user=User(username=form.username.data, email=form.email.data, student_id = form.student_id.data)
+        user=User(username=form.username.data, email=form.email.data, student_id = form.student_id.data, age=form.age.data, sex=form.sex.data, education=form.education.data, year=form.year.data, institution=form.institution.data, experience=form.experience.data, years_experience=form.years_experience.data)
+
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
