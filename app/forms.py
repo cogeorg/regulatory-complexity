@@ -13,7 +13,7 @@ class LoginForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     student_id = StringField("Student ID", validators=[DataRequired()])
-    sex = StringField('Sex')
+    sex = SelectField('Sex', choices=[('Male','Male'), ('Female','Female'), ('Other','Other')])
     age = StringField('Age')
     
     education = SelectField('Education', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
