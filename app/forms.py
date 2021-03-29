@@ -45,6 +45,13 @@ class PracticeForm(FlaskForm):
     # answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
     answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", default="Practice")
     n_reg  = HiddenField(id="n_reg")
+    sex = HiddenField()
+    age = HiddenField()
+    education = HiddenField()
+    year = HiddenField()
+    institution = HiddenField()
+    experience = HiddenField()
+    years_experience = HiddenField()
     # def validate(self):
     #     rv = FlaskForm.validate(self)
     #     if not rv:
@@ -63,6 +70,13 @@ class PracticeForm(FlaskForm):
 class SubmissionForm(FlaskForm):
     answer = FloatField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
     n_reg  = HiddenField(id="n_reg", validators = [DataRequired()])
+    sex = HiddenField()
+    age = HiddenField()
+    education = HiddenField()
+    year = HiddenField()
+    institution = HiddenField()
+    experience = HiddenField()
+    years_experience = HiddenField()
     def validate(self):
         rv = FlaskForm.validate(self)
         if not rv:

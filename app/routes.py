@@ -150,7 +150,7 @@ def experiment(n_reg=1, Score=0):
     user_id = current_user.id
 
     if n_reg == 1 :
-        random_exp = 1
+        random_exp = 0
         with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
             file.write(str(random_exp) + "\n")
 
@@ -192,6 +192,7 @@ def experiment(n_reg=1, Score=0):
     if form.validate_on_submit():
 
         submission = Submission(answer = form.answer.data, correctanswer = correctanswer , verifyanswer = bool((correctanswer == form.answer.data)), regulation = user_experiments[n_reg-1], balance_sheet = user_experiments[n_reg-1], user_id = current_user.id)
+
         spenttime = ((datetime.utcnow() - session['start_time']))
 
         # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score', 'Set']
@@ -219,13 +220,15 @@ def experiment(n_reg=1, Score=0):
                 Score = int(last_row[0])
                 Score = Score
                 
-        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, int(submission.correctanswer), current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), int(float(Score)), random_user_num ]
+        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, int(submission.correctanswer), current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), int(float(Score)), random_user_num,current_user.age, current_user.sex, current_user.education, current_user.year, current_user.institution, current_user.experience, current_user.years_experience  ]
+        
         
         service = build('sheets', 'v4', credentials=creds)
         list = [row]
+        print (list)
         resource = {
-        "majorDimension": "ROWS",
-        "values": list
+            "majorDimension": "ROWS",
+            "values": list
         }
 
         range = "submissions!A:Z"
