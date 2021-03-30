@@ -26,7 +26,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from oauth2client.service_account import ServiceAccountCredentials
 
-
 # define the scope
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 
@@ -222,44 +221,17 @@ def experiment(n_reg=1, Score=0):
                 Score = Score
                 
         row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, int(submission.correctanswer), current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), int(float(Score)), random_user_num,current_user.age, current_user.sex, current_user.education, current_user.year, current_user.institution, current_user.experience, current_user.years_experience  ]
-
-        service = build('sheets', 'v4', credentials=creds)
-
-        headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score', 'Set']
-
-        list = [headers]
         
-        resource = {
-            "majorDimension": "ROWS",
-            "values": list
-        }
-
-        # add a sheet with 20 rows and 2 columns
-        if (n_reg == 1) :
-            try:
-                current_sheet = (str(current_user.username))
-                sheet.add_worksheet(rows=10, cols=20,title=current_sheet)
-                range = str(current_user.username) + "!A:Z"
-                service.spreadsheets().values().append(
-                spreadsheetId=spreadsheetId,
-                range=range,
-                body=resource,
-                valueInputOption="USER_ENTERED"
-                ).execute()
-            except:
-                pass
-            # add a sheet with 20 rows and 2 columns
-        else:
-            pass
-
+        
+        service = build('sheets', 'v4', credentials=creds)
         list = [row]
-
+        print (list)
         resource = {
             "majorDimension": "ROWS",
             "values": list
         }
 
-        range = str(current_user.username) + "!A:Z"
+        range = "submissions!A:Z"
         service.spreadsheets().values().append(
         spreadsheetId=spreadsheetId,
         range=range,
@@ -281,29 +253,15 @@ def experiment(n_reg=1, Score=0):
 @app.route('/endpage')
 def endpage():
 
-    # get the first sheet of the Spreadsheet
-    sheet_instance = sheet.worksheet(str(current_user.username))
+    headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score', 'Set']
+    df = pd.read_csv("./app/static/submissions.csv", usecols=[0,3,5,6], names=headers)
 
-        
-    service = build('sheets', 'v4', credentials=creds)
-    spreadsheetId = "1gs3oq_1eCVSXdLhTfgcgv-iqkFqrChKySAZjAfrQMOQ"
-    range = (str(current_user.username)) + "!A:F"
-
-    # get all the records of the data
-    records_data = sheet_instance.get_all_records()
-
-    # view the data
-    #print(records_data)
-
-    records_data = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range=range).execute().get('values')
-    first_row = records_data[0] if records_data else None
-    df = pd.DataFrame(data=records_data, columns = ['Index','Regulation','balance_sheet','answer','true','Correct Answer'])
     top = df.head(0)
     bottom = df.tail(10)
     concatenated = pd.concat([top,bottom])
     concatenated.reset_index(inplace=True, drop=True)
 
-    concatenated.to_html("./app/static/useranswers.htm", index=None)
+    concatenated.loc[concatenated['User ID'] == current_user.id].to_html("./app/static/useranswers.htm", index=None)
     table = concatenated.to_html()
 
     return render_template('endpage.html', table=table)
