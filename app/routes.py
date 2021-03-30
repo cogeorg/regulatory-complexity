@@ -254,15 +254,25 @@ def experiment(n_reg=1, Score=0):
 def endpage():
 
     headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score', 'Set']
-    df = pd.read_csv("./app/static/submissions.csv", usecols=[0,3,5,6], names=headers)
 
-    top = df.head(0)
+    # get the instance of the Spreadsheet
+    sheet = client.open('submissions')
+
+    # get the first sheet of the Spreadsheet
+    sheet_instance = sheet.get_worksheet(0)
+
+    records_data = sheet_instance.get_all_records()
+    
+    df = pd.DataFrame.from_dict(records_data)
+    newdf = [df['User ID'] == current_user.id]
     bottom = df.tail(10)
-    concatenated = pd.concat([top,bottom])
+    concatenated = pd.concat([bottom])
+    print(concatenated)
     concatenated.reset_index(inplace=True, drop=True)
 
     concatenated.loc[concatenated['User ID'] == current_user.id].to_html("./app/static/useranswers.htm", index=None)
     table = concatenated.to_html()
+    print(table)
 
     return render_template('endpage.html', table=table)
 
