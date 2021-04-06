@@ -15,9 +15,9 @@ class RegistrationForm(FlaskForm):
     student_id = StringField("Student ID", validators=[DataRequired()])
     sex = SelectField('Sex', choices=[('Male','Male'), ('Female','Female'), ('Other','Other')])
     age = StringField('Age')
-    
-    education = SelectField('Education', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
-    year = StringField('Year of qualification completed')
+
+    education = SelectField('Highest degree obtained', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
+    year = StringField('Year highest degree was obtained')
     institution = StringField('The name of Institution where qualification complete')
     experience = SelectField('Professional Experience', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
     years_experience = StringField('Years of Professional Experience')
@@ -65,7 +65,7 @@ class PracticeForm(FlaskForm):
     #     return True
 
     submit = SubmitField("Continue", id="modalbtn", render_kw={"onclick": "reset_timer()"})
-    
+
 
 class SubmissionForm(FlaskForm):
     answer = FloatField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
@@ -85,4 +85,3 @@ class SubmissionForm(FlaskForm):
         return True
 
     submit = SubmitField("Save and continue", render_kw={"onclick": "reset_timer()"})
-    
