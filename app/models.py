@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     age = db.Column(db.String(64), index = True)
     education = db.Column(db.String(64), index = True)
     year = db.Column(db.String(64), index = True)
+    area = db.Column(db.String(120), index = True)
     institution = db.Column(db.String(256), index = True)
     experience = db.Column(db.String(128), index = True)
     years_experience = db.Column(db.String(128), index = True)
