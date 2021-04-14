@@ -56,7 +56,6 @@ records_df = pd.DataFrame.from_dict(records_data)
 # view the top records
 # print(records_df.head())
 
-
 @app.before_request
 def before_request():
     if not request.is_secure and app.env != "development":
@@ -107,8 +106,7 @@ def register():
         return redirect(url_for('accept_rules'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user=User(username=form.username.data, email=form.email.data, student_id = form.student_id.data, age=form.age.data, sex=form.sex.data, education=form.education.data, year=form.year.data, institution=form.institution.data, experience=form.experience.data, years_experience=form.years_experience.data)
-
+        user=User(username=form.username.data, email=form.email.data, student_id = form.student_id.data, age=form.age.data, sex=form.sex.data, education=form.education.data, year=form.year.data, area=form.area.data, institution=form.institution.data, experience=form.experience.data, years_experience=form.years_experience.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -220,7 +218,7 @@ def experiment(n_reg=1, Score=0):
                 Score = int(last_row[0])
                 Score = Score
                 
-        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, int(submission.correctanswer), current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), int(float(Score)), random_user_num,current_user.age, current_user.sex, current_user.education, current_user.year, current_user.institution, current_user.experience, current_user.years_experience  ]
+        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, int(submission.correctanswer), current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), int(float(Score)), random_user_num,current_user.age, current_user.sex, current_user.education, current_user.year, current_user.area, current_user.institution, current_user.experience, current_user.years_experience  ]
         
         
         service = build('sheets', 'v4', credentials=creds)

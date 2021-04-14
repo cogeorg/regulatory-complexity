@@ -17,6 +17,7 @@ class RegistrationForm(FlaskForm):
     age = StringField('Age')
 
     education = SelectField('Highest degree obtained', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
+    area = SelectField('Area highest degree was obtained in', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
     year = StringField('Year highest degree was obtained')
     institution = StringField('The name of Institution where qualification complete')
     experience = SelectField('Professional Experience', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
@@ -49,6 +50,7 @@ class PracticeForm(FlaskForm):
     age = HiddenField()
     education = HiddenField()
     year = HiddenField()
+    area = HiddenField()
     institution = HiddenField()
     experience = HiddenField()
     years_experience = HiddenField()
@@ -74,6 +76,7 @@ class SubmissionForm(FlaskForm):
     age = HiddenField()
     education = HiddenField()
     year = HiddenField()
+    area = HiddenField()
     institution = HiddenField()
     experience = HiddenField()
     years_experience = HiddenField()
