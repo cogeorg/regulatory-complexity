@@ -30,16 +30,19 @@ def load_correctanswer(correctanswer):
 
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    answer = db.Column(db.Float())
+    question = db.Column(db.String(120))
+    answer = db.Column(db.String(120))
     correctanswer = db.Column(db.Float())
     verifyanswer = db.Column(db.Float())
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    # timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    totaltime = db.Column(db.String(120))
     regulation = db.Column(db.String(120))
     balance_sheet = db.Column(db.String(120))
+    score = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Submission {}'.format(self.answerfor)
+        return '<Submission {}>'
 
 class CorrectAnswer(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -152,31 +152,53 @@ def experiment(n_reg=1, Score=0):
  
     if form.validate_on_submit():
 
-        submission = Submission(answer = form.answer.data, correctanswer = correctanswer , verifyanswer = bool((correctanswer == form.answer.data)), regulation = user_experiments[n_reg-1], balance_sheet = user_experiments[n_reg-1], user_id = current_user.id)
-        spenttime = ((datetime.utcnow() - session['start_time']))
+        # submission = Submission(answer = form.answer.data, correctanswer = correctanswer , verifyanswer = bool((correctanswer == form.answer.data)), regulation = user_experiments[n_reg-1], balance_sheet = user_experiments[n_reg-1], user_id = current_user.id),
+        # spenttime = ((datetime.utcnow() - session['start_time']))
 
-        headers = ['Index','Regulation','balance_sheet','answer','true','correctanswer','user_id','Student ID','Username', 'Time Elapsed','Submission Time','Score']
+        if n_reg == 1: 
+            practiceanswer = str(form.answer.data)
+        else: 
+            practiceanswer = int(form.answer.data)
+
+        # headers = ['Index','Regulation','balance_sheet','answer','true','correctanswer','user_id','Student ID','Username', 'Time Elapsed','Submission Time','Score']
         
         if (n_reg == 1):
-            if (bool(correctanswer == form.answer.data)):
+            if ( bool((int(correctanswer) == practiceanswer)) ):
                 Score = 1
             else:
                 Score = 0
         else:
-            if (bool(correctanswer == form.answer.data)):
-                df = pd.read_csv("./app/static/submissions.csv", names=headers)
-                Score = df['Score'].iloc[-1]
-                Score = int(Score) + 1   
+            if ( bool((int(correctanswer) == practiceanswer)) ):
+                # df = pd.read_csv("./app/static/submissions.csv", names=headers)
+                # Score = df['Score'].iloc[-1]
+                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('score')]
+                Score = int(Score[-1]) + 1
             else:
-                df = pd.read_csv("./app/static/submissions.csv", names=headers)
-                Score = df['Score'].iloc[-1]
-                Score = int(Score)
+                # df = pd.read_csv("./app/static/submissions.csv", names=headers)
+                # Score = df['Score'].iloc[-1]
+                # Score = int(Score)
+                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('score')]
+                Score = int(Score[-1])
+        
+        print(Score)
+
+        db.session.add(Submission(
+            question = n_reg,
+            answer = form.answer.data, 
+            correctanswer = correctanswer , 
+            verifyanswer = bool((int(correctanswer) == practiceanswer)), 
+            totaltime = (str(datetime.utcnow() - session['start_time'])),
+            regulation = user_experiments[n_reg-1],
+            balance_sheet = user_experiments[n_reg-1],
+            score = Score,
+            user_id = current_user.id)),
+        db.session.commit()
                 
-        row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, submission.correctanswer, current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), Score, random_user_num ]
-        with open('./app/static/submissions.csv', "a") as f:
-            writer = csv.writer(f)
-            writer.writerow(row)
-        f.close()
+        # row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, submission.correctanswer, current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), Score, random_user_num ]
+        # with open('./app/static/submissions.csv', "a") as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow(row)
+        # f.close()
 
         if n_reg<=9:
             return redirect(url_for("experiment", n_reg=n_reg+1)) #+1))
@@ -184,24 +206,53 @@ def experiment(n_reg=1, Score=0):
             return redirect(url_for("endpage"))
 
     session['start_time'] = datetime.utcnow()
+
+    dummy_data2 = {
+                    'score': Score,
+                    }
+    df = pd.DataFrame(dummy_data2, index=[0])
+    bottom = df.tail(1)
+    print(bottom)
     
     return render_template('experiment.html', form = form, user_experiment_id = user_experiments[n_reg-1], n_reg = n_reg, table = table)
-
 
 
 @app.route('/endpage')
 def endpage():
 
-    headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
-    df = pd.read_csv("./app/static/submissions.csv", usecols=[0,3,5,6], names=headers)
+    # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
+    # df = pd.read_csv("./app/static/submissions.csv", usecols=[0,3,5,6], names=headers)
 
+    # top = df.head(0)
+    # bottom = df.tail(10)
+
+    # test = Submission.query.filter_by(user_id=current_user.id).all()
+    # test.query.filter_by(user_id=current_user.id).all()
+    # test = [r.test for r in db.session.query(Submission.answer).filter_by(user_id=current_user.id).distinct()]
+    answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('answer')]
+    correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('correctanswer')]
+    regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('regulation')]
+
+    # print(answer)
+    # print(correct_answer)
+    # print(regulation)
+
+    dummy_data1 = {
+        'regulation': regulation,
+        'answer': answer,
+        'correct answer': correct_answer}
+
+    df = pd.DataFrame(dummy_data1, columns=['regulation', 'answer', 'correct answer'])
     top = df.head(0)
     bottom = df.tail(10)
+    print(df)
+    # names, data = query_to_list(answer)
+    # df2 = pd.DataFrame.from_records(data, columns=names)
     concatenated = pd.concat([top,bottom])
     concatenated.reset_index(inplace=True, drop=True)
 
-    concatenated.loc[concatenated['User ID'] == current_user.id].to_html("./app/static/useranswers.htm", index=None)
-    table = concatenated.to_html()
+    concatenated.to_html("./app/static/useranswers.htm", index=None)
+    table = df.to_html()
 
     return render_template('endpage.html', table=table)
 
@@ -210,9 +261,20 @@ def endpage():
 @app.route('/leaderboard')
 def leaderboard():
 
-    headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
-    df = pd.read_csv("./app/static/submissions.csv", parse_dates=[9], names = headers)
-    table = df.loc[df['Index'] == 10].sort_values(by='Score', ascending=False).to_html("./app/static/leaderboard.htm", index=None)
+    # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
+    score = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values('score')]
+    user_id = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values('user_id')]
+    # User.query.filter(User.email.endswith('@example.com')) 
+    dummy_data3 = {
+        'user' : user_id,
+        'score': score
+    }
+
+    df = pd.DataFrame(dummy_data3)
+    df = df.sort_values(by='score',  ascending=False)
+    df.to_html("./app/static/leaderboard.htm", index=None)
+    table = df.to_html()
+    # table = df.loc[df['Index'] == 10].sort_values(by='Score', ascending=False).to_html("./app/static/leaderboard.htm", index=None)
 
     return render_template('leaderboard.html', table=table)
 

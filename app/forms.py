@@ -35,7 +35,7 @@ class RulesForm(FlaskForm):
 
 class PracticeForm(FlaskForm):
     # answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
-    answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", default="Practice")
+    answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", default="Practice Answer", id="set_answer")
     n_reg  = HiddenField(id="n_reg")
     # def validate(self):
     #     rv = FlaskForm.validate(self)
@@ -49,11 +49,11 @@ class PracticeForm(FlaskForm):
 
     #     return True
 
-    submit = SubmitField("Continue", id="modalbtn", render_kw={"onclick": "reset_timer()"})
+    submit = SubmitField("Continue", id="modalbtn", render_kw={"onclick": "setanswer()"})
     
 
 class SubmissionForm(FlaskForm):
-    answer = FloatField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
+    answer = IntegerField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
     n_reg  = HiddenField(id="n_reg", validators = [DataRequired()])
     def validate(self):
         rv = FlaskForm.validate(self)
