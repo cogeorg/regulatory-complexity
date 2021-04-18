@@ -239,9 +239,9 @@ def endpage():
     # test = Submission.query.filter_by(user_id=current_user.id).all()
     # test.query.filter_by(user_id=current_user.id).all()
     # test = [r.test for r in db.session.query(Submission.answer).filter_by(user_id=current_user.id).distinct()]
-    answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('answer')]
-    correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('correctanswer')]
-    regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('regulation')]
+    answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('answer'))]
+    correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('correctanswer'))]
+    regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('regulation'))]
 
     # print(answer)
     # print(correct_answer)
@@ -272,8 +272,8 @@ def endpage():
 def leaderboard():
 
     # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
-    score = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values('score')]
-    user_id = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values('user_id')]
+    score = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((str('score')))]
+    user_id = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((str('user_id')))]
     # User.query.filter(User.email.endswith('@example.com')) 
     dummy_data3 = {
         'user' : user_id,
