@@ -226,7 +226,7 @@
           <div id="practiceStart">
             <label class="control-label" for="answer">Enter the bank's total risk weighted assets for this regulation in Million EUR. Using a decimal point is accepted (i.e. writing "10.0"), but a comma is not:</label>
             <input class="form-control" id="practiceAnswer" type="text" value="">
-            <button class="btn btn-default" data-target="practiceModal" data-toggle="modal" style="position: absolute;
+            <button class="btn btn-default" data-target="practiceModal" onclick="setanswer()" data-toggle="modal" style="position: absolute;
             right: 0;
             margin-top: 16px;
             margin-right: 35px;
@@ -283,7 +283,10 @@ document.getElementById("n_reg").value = {{n_reg}};
 n_reg = {{n_reg}};
 
 // 3. Get practice answer  - pass to variable
-n_answer = document.getElementById("practiceAnswer").value;
+function setanswer() {
+answer = document.getElementById("practiceAnswer").value;
+document.getElementById("n_answer").value = answer;
+}
 
 // 4. If n_reg is 1 then practice answer wtf_form will be shown - No need to change
 if (n_reg == 1) {
@@ -336,13 +339,13 @@ fetch("../static/exercises/" + {{user_experiment_id}} + "/regulation_"+ {{user_e
 
 // 10. This function outputs the static regulation table. Regulation can be set in table_template.csv. The csv will be converted into table.htm on the fly.
 
-fetch("../static/table.htm")
-  .then(response => {
-    return response.text()
-  })
-  .then(data => {
-    document.querySelector("balancesheet").innerHTML = data;
-  });
+  // fetch("../static/table.htm")
+  //   .then(response => {
+  //     return response.text()
+  //   })
+  //   .then(data => {
+  //     document.querySelector("balancesheet").innerHTML = data;
+  //   });
 
 
 // 6. This function resets the timer
