@@ -20,42 +20,6 @@ import random
 import numpy as np
 from datetime import datetime
 
-import gspread
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from oauth2client.service_account import ServiceAccountCredentials
-
-# define the scope
-scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-
-# add credentials to the account
-creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
-
-# authorize the clientsheet 
-client = gspread.authorize(creds)
-
-# get the instance of the Spreadsheet
-sheet = client.open('submissions')
-
-# get the first sheet of the Spreadsheet
-sheet_instance = sheet.get_worksheet(0)
-
-
-sheet_instance.col_count
-#print (sheet_instance.row_count)
-
-# get all the records of the data
-records_data = sheet_instance.get_all_records()
-
-# view the data
-#print(records_data)
-
-records_df = pd.DataFrame.from_dict(records_data)
-
-# view the top records
-# print(records_df.head())
-
 @app.before_request
 def before_request():
     if not request.is_secure and app.env != "development":
@@ -99,14 +63,13 @@ def login():
     return render_template('login.html', title = "Sign in", form = form)
 
 @app.route('/register', methods=["GET", "POST"])
-
 def register():
     if current_user.is_authenticated:
         flash('You are already logged in!')
         return redirect(url_for('accept_rules'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user=User(username=form.username.data, email=form.email.data, student_id = form.student_id.data, age=form.age.data, sex=form.sex.data, education=form.education.data, year=form.year.data, area=form.area.data, institution=form.institution.data, experience=form.experience.data, years_experience=form.years_experience.data)
+        user=User(username=form.username.data, email=form.email.data, student_id = form.student_id.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -148,7 +111,7 @@ def experiment(n_reg=1, Score=0):
     user_id = current_user.id
 
     if n_reg == 1 :
-        random_exp = 0
+        random_exp = 1
         with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
             file.write(str(random_exp) + "\n")
 
@@ -293,6 +256,8 @@ def endpage():
 
     return render_template('endpage.html', table=table)
 
+
+
 @app.route('/leaderboard')
 def leaderboard():
 
@@ -306,7 +271,7 @@ def leaderboard():
     }
 
     df = pd.DataFrame(dummy_data3)
-    df = df.sort_values(by='score',  ascending=False)
+    df = df.sort_values(by='score', ascending=False)
     df.to_html("./app/static/leaderboard.htm", index=None)
     table = df.to_html()
     # table = df.loc[df['Index'] == 10].sort_values(by='Score', ascending=False).to_html("./app/static/leaderboard.htm", index=None)

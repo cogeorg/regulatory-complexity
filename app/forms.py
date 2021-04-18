@@ -44,7 +44,7 @@ class RulesForm(FlaskForm):
 
 class PracticeForm(FlaskForm):
     # answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
-    answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", default="Practice Answer", id="set_answer")
+    answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", default="Practice")
     n_reg  = HiddenField(id="n_reg")
     sex = HiddenField()
     age = HiddenField()
@@ -66,11 +66,11 @@ class PracticeForm(FlaskForm):
 
     #     return True
 
-    submit = SubmitField("Continue", id="modalbtn", render_kw={"onclick": "setanswer()"})
-    
+    submit = SubmitField("Continue", id="modalbtn", render_kw={"onclick": "reset_timer()"})
+
 
 class SubmissionForm(FlaskForm):
-    answer = IntegerField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
+    answer = FloatField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
     n_reg  = HiddenField(id="n_reg", validators = [DataRequired()])
     sex = HiddenField()
     age = HiddenField()
