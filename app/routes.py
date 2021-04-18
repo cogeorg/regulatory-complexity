@@ -181,13 +181,13 @@ def experiment(n_reg=1, Score=0):
             if ( bool((int(correctanswer) == practiceanswer)) ):
                 # df = pd.read_csv("./app/static/submissions.csv", names=headers)
                 # Score = df['Score'].iloc[-1]
-                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('score')]
+                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('score'))]
                 Score = int(Score[-1]) + 1
             else:
                 # df = pd.read_csv("./app/static/submissions.csv", names=headers)
                 # Score = df['Score'].iloc[-1]
                 # Score = int(Score)
-                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values('score')]
+                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('score'))]
                 Score = int(Score[-1])
         
         print(Score)
