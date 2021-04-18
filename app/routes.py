@@ -263,7 +263,7 @@ def endpage():
     
     df = pd.DataFrame.from_dict(records_data)
     newdf = [df['User ID'] == current_user.id]
-    bottom = df.tail(10)
+    bottom = newdf.tail(10)
     concatenated = pd.concat([bottom])
     print(concatenated)
     concatenated.reset_index(inplace=True, drop=True)
