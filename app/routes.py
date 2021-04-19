@@ -273,8 +273,8 @@ def endpage():
 def leaderboard():
 
     # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
-    score = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((column("score")))]
-    user_id = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((column("user_id")))]
+    score = [r[0] for r in Submission.query.filter_by(question = 10).values((column("score")))]
+    user_id = [r[0] for r in Submission.query.filter_by(question = 10).values((column("user_id")))]
     # User.query.filter(User.email.endswith('@example.com')) 
     dummy_data3 = {
         'user' : user_id,
