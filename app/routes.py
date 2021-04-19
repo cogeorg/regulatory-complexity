@@ -213,20 +213,19 @@ def endpage():
     regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("regulation"))]
 
     dummy_data1 = {
-        'question' : question,
+        'question': question,
         'regulation': regulation,
         'answer': answer,
         'correct answer': correct_answer }
 
     
     df = pd.DataFrame(dummy_data1, columns=['question','regulation', 'answer', 'correct answer'])
-   
+    df.sort_values(by='question', ascending=False)
 
     print(df)
 
     # top = df.head(0)
     bottom = df.tail(10)
-    df = df.sort_values(by='question', ascending=False)
 
     print(bottom)
    
