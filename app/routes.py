@@ -220,7 +220,7 @@ def endpage():
     print(df)
 
     # top = df.head(0)
-    bottom = df.tail(10)
+    bottom = df.tail(20)
    
     # concatenated = pd.concat([bottom])
     # concatenated.reset_index(inplace=True, drop=True)
