@@ -191,6 +191,7 @@ def experiment(n_reg=1):
             user_id = current_user.id,
             student_id = current_user.student_id)),
         db.session.commit()
+        db.session.expire_all()
                 
 
         if n_reg<=9:
@@ -206,21 +207,26 @@ def experiment(n_reg=1):
 @app.route('/endpage')
 def endpage():
 
+    question = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("question"))]
     answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("answer"))]
     correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("correctanswer"))]
     regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("regulation"))]
 
     dummy_data1 = {
+        'question' : question,
         'regulation': regulation,
         'answer': answer,
         'correct answer': correct_answer }
 
-    df = pd.DataFrame(dummy_data1, columns=['regulation', 'answer', 'correct answer'])
+    
+    df = pd.DataFrame(dummy_data1, columns=['question','regulation', 'answer', 'correct answer'])
+   
 
     print(df)
 
     # top = df.head(0)
     bottom = df.tail(10)
+    df = df.sort_values(by='question', ascending=False)
 
     print(bottom)
    
