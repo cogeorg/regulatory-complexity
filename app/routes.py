@@ -167,18 +167,12 @@ def experiment(n_reg=1, Score=0):
             else:
                 Score = 0
         else:
-            if ( bool((int(correctanswer) == practiceanswer)) ):
-                # df = pd.read_csv("./app/static/submissions.csv", names=headers)
-                # Score = df['Score'].iloc[-1]
+            if ( bool((int(correctanswer) == practiceanswer)) ): 
                 Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1]) + 1
             else:
-                # df = pd.read_csv("./app/static/submissions.csv", names=headers)
-                # Score = df['Score'].iloc[-1]
-                # Score = int(Score)
                 Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1])
-        
 
 
         db.session.add(Submission(
@@ -201,12 +195,6 @@ def experiment(n_reg=1, Score=0):
             return redirect(url_for("endpage"))
 
     session['start_time'] = datetime.utcnow()
-
-    dummy_data2 = {
-                    'score': Score,
-                    }
-    df = pd.DataFrame(dummy_data2, index=[0])
-    bottom = df.tail(1)
     
     return render_template('experiment.html', form = form, user_experiment_id = user_experiments[n_reg-1], n_reg = n_reg, table = table)
 
@@ -224,23 +212,12 @@ def endpage():
         'correct answer': correct_answer }
 
     df = pd.DataFrame(dummy_data1, columns=['regulation', 'answer', 'correct answer'])
-    # print(df)
-    # regulation = df.regulation.astype(int) + 1
 
-    # dummy_data2 = {
-    #     'regulation': regulation,
-    #     'answer': answer,
-    #     'correct answer': correct_answer }
-
-    # df = pd.DataFrame(dummy_data2, columns=['regulation', 'answer', 'correct answer'])
-    # print(df)
-    # result = pd.concat(frames)
-    # print(result)
     top = df.head(0)
     bottom = df.tail(10)
    
     concatenated = pd.concat([top,bottom])
-    concatenated.reset_index(inplace=True, drop=True)
+    # concatenated.reset_index(inplace=True, drop=True)
 
     concatenated.to_html("./app/static/useranswers.htm", index=None)
     table = df.to_html()
