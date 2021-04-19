@@ -48,6 +48,7 @@ class Submission(db.Model):
     regulation = db.Column(db.String(120))
     balance_sheet = db.Column(db.String(120))
     score = db.Column(db.Integer)
+    student_id = db.Column(db.String(120))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):

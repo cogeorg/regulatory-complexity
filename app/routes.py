@@ -190,7 +190,8 @@ def experiment(n_reg=1, Score=0):
             regulation = user_experiments[n_reg-1],
             balance_sheet = user_experiments[n_reg-1],
             score = Score,
-            user_id = current_user.id)),
+            user_id = current_user.id,
+            student_id = current_user.student_id)),
         db.session.commit()
                 
 
@@ -252,14 +253,15 @@ def leaderboard():
 
    
     score = [r[0] for r in Submission.query.filter_by(question = '10').values((column("score")))]
-    user_id = [r[0] for r in Submission.query.filter_by(question = '10').values((column("user_id")))]
+    username = [r[0] for r in Submission.query.filter_by(question = '10').values((column("student_id")))]
    
     dummy_data3 = {
-        'user' : user_id,
+        'user' : username,
         'score': score
     }
 
     df = pd.DataFrame(dummy_data3)
+    pd.set_option('precision', 0)
     df = df.sort_values(by='score', ascending=False)
     df.to_html("./app/static/leaderboard.htm", index=None)
     table = df.to_html()
