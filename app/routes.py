@@ -112,11 +112,12 @@ def rules():
 @app.route('/experiment', methods=["GET", "POST"])
 @app.route('/experiment/<int:n_reg>', methods=["GET", "POST"])
 @login_required
-def experiment(n_reg=1, Score=0):
+def experiment(n_reg=1):
     if not current_user.is_authenticated:
         return redirect(url_for("login"))
 
     user_id = current_user.id
+    user_experiments = []
 
     if n_reg == 1 :
         random_exp = 1
@@ -125,7 +126,6 @@ def experiment(n_reg=1, Score=0):
 
     for line in open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv"):
         random_user_num = (line.strip("\n"))
-        user_experiments = []
         for line in open("./app/static/users/user_" + str(random_user_num) + "_experiments.csv"):
             user_experiments.append(line.strip("\n"))
     
@@ -162,14 +162,14 @@ def experiment(n_reg=1, Score=0):
 
         
         if n_reg == 1:
-            if ( bool((int(correctanswer) == answer)) ):
+            if  bool((int(correctanswer) == answer)) :
                 Score = 1
                 print(Score)
             else:
                 Score = 0
                 print(Score)
         else:
-            if ( bool((int(correctanswer) == answer)) ): 
+            if  bool((int(correctanswer) == answer)) :
                 Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1]) + 1
                 print(Score)
@@ -182,8 +182,8 @@ def experiment(n_reg=1, Score=0):
         db.session.add(Submission(
             question = n_reg,
             answer = form.answer.data, 
-            correctanswer = correctanswer, 
-            verifyanswer = bool((int(correctanswer) == answer)), 
+            correctanswer = correctanswer,
+            verifyanswer = bool((int(correctanswer) == answer)),
             totaltime = (str(datetime.utcnow() - session['start_time'])),
             regulation = user_experiments[n_reg-1],
             balance_sheet = user_experiments[n_reg-1],
