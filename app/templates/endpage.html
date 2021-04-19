@@ -109,18 +109,25 @@
         </div>
         <div style="display: inline-block; margin: 10px; text-align: left">
           <div class="panel panel-default"
-            style="padding:40px; padding-top: 40px; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;">
+            style="padding:40px; padding-top: 40px; display: flex; flex-direction: column; justify-content: space-between;">
             <p style="font-size: 15px; font-weight: 400">Congratulations you completed the experiment. Your results are
               to the left.
             </p>
 
             <!-- <br><br>You scored 1/10 for the experiment and completed the test in a total time of 00:30:21 -->
 
-            <div style="margin-top: 50px">
+            <!-- <div style="margin-top: 50px">
               <a href="/leaderboard"><button class='btn btn-info btn-small'
                   style="background-color: #003A70; border-radius: 0px; border: none">Continue to
                   Leaderboard</button></a>
-            </div>
+            </div> -->
+
+            <p>If you have any feedback or comments, please send it to <a href="mailto:co-pierre.georg@uct.ac.za">co-pierre.georg@uct.ac.za</a>. 
+            <br></br>
+            <a href="/experiment" onclick="reset_timer()">Restart Experiment</a> or <a href="{{ url_for('logout') }}"> Logout</a> </p>
+            <!-- {% if current_user.is_anonymous %}
+            {% else %}  -->
+            {% endif %}
           </div>
 
         </div>

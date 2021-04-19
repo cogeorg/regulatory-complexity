@@ -150,26 +150,26 @@ def experiment(n_reg=1, Score=0):
  
     if form.validate_on_submit():
 
-        if n_reg == 1 :
+        if n_reg == 1:
             random_exp = (random.randint(0,9999))
             with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
                 file.write(str(random_exp) + "\n")
 
         if n_reg == 1: 
-            practiceanswer = str(form.answer.data)
+            answer = str(form.answer.data)
         else: 
-            practiceanswer = int(form.answer.data)
+            answer = int(form.answer.data)
 
         
-        if (n_reg == 1):
-            if ( bool((int(correctanswer) == practiceanswer)) ):
+        if n_reg == 1:
+            if ( bool((int(correctanswer) == answer)) ):
                 Score = 1
                 print(Score)
             else:
                 Score = 0
                 print(Score)
         else:
-            if ( bool((int(correctanswer) == practiceanswer)) ): 
+            if ( bool((int(correctanswer) == answer)) ): 
                 Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1]) + 1
                 print(Score)
@@ -183,7 +183,7 @@ def experiment(n_reg=1, Score=0):
             question = n_reg,
             answer = form.answer.data, 
             correctanswer = correctanswer, 
-            verifyanswer = bool((int(correctanswer) == practiceanswer)), 
+            verifyanswer = bool((int(correctanswer) == answer)), 
             totaltime = (str(datetime.utcnow() - session['start_time'])),
             regulation = user_experiments[n_reg-1],
             balance_sheet = user_experiments[n_reg-1],
