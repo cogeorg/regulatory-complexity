@@ -126,11 +126,6 @@ def experiment(n_reg=1, Score=0):
         with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
             file.write(str(random_exp) + "\n")
 
-    if n_reg == 2 :
-        random_exp = (random.randint(0,9999))
-        with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
-            file.write(str(random_exp) + "\n")
-
     for line in open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv"):
         random_user_num = (line.strip("\n"))
         user_experiments = []
@@ -166,6 +161,11 @@ def experiment(n_reg=1, Score=0):
         # submission = Submission(answer = form.answer.data, correctanswer = correctanswer , verifyanswer = bool((correctanswer == form.answer.data)), regulation = user_experiments[n_reg-1], balance_sheet = user_experiments[n_reg-1], user_id = current_user.id),
         # spenttime = ((datetime.utcnow() - session['start_time']))
 
+        if n_reg == 1 :
+            random_exp = (random.randint(0,9999))
+            with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
+                file.write(str(random_exp) + "\n")
+
         if n_reg == 1: 
             practiceanswer = str(form.answer.data)
         else: 
@@ -191,7 +191,7 @@ def experiment(n_reg=1, Score=0):
                 Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1])
         
-        print(Score)
+
 
         db.session.add(Submission(
             question = n_reg,
@@ -223,7 +223,7 @@ def experiment(n_reg=1, Score=0):
                     }
     df = pd.DataFrame(dummy_data2, index=[0])
     bottom = df.tail(1)
-    print(bottom)
+    #print(bottom)
     
     return render_template('experiment.html', form = form, user_experiment_id = user_experiments[n_reg-1], n_reg = n_reg, table = table)
 
@@ -256,7 +256,7 @@ def endpage():
     df = pd.DataFrame(dummy_data1, columns=['regulation', 'answer', 'correct answer'])
     top = df.head(0)
     bottom = df.tail(10)
-    print(df)
+    #print(df)
     # names, data = query_to_list(answer)
     # df2 = pd.DataFrame.from_records(data, columns=names)
     concatenated = pd.concat([top,bottom])
