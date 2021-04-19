@@ -219,15 +219,15 @@ def endpage():
 
     print(df)
 
-    top = df.head(0)
+    # top = df.head(0)
     bottom = df.tail(10)
    
-    concatenated = pd.concat([top,bottom])
+    # concatenated = pd.concat([bottom])
     # concatenated.reset_index(inplace=True, drop=True)
 
     print(concatenated)
 
-    concatenated.to_html("./app/static/useranswers-" + str(current_user.id) + ".htm", index=None)
+    bottom.to_html("./app/static/useranswers-" + str(current_user.id) + ".htm", index=None)
     table = concatenated.to_html()
 
     print(table)
