@@ -184,7 +184,7 @@ def experiment(n_reg=1, Score=0):
         db.session.add(Submission(
             question = n_reg,
             answer = form.answer.data, 
-            correctanswer = correctanswer , 
+            correctanswer = correctanswer, 
             verifyanswer = bool((int(correctanswer) == practiceanswer)), 
             totaltime = (str(datetime.utcnow() - session['start_time'])),
             regulation = user_experiments[n_reg-1],
