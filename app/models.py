@@ -39,17 +39,16 @@ def load_correctanswer(correctanswer):
 
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.String(120))
-    answer = db.Column(db.String(120))
+    question = db.Column(db.VARCHAR(120))
+    answer = db.Column(db.Float())
     correctanswer = db.Column(db.Float())
     verifyanswer = db.Column(db.Float())
-    # timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    totaltime = db.Column(db.String(120))
-    regulation = db.Column(db.String(120))
-    balance_sheet = db.Column(db.String(120))
+    totaltime = db.Column(db.VARCHAR(120))
+    regulation = db.Column(db.VARCHAR(120))
+    balance_sheet = db.Column(db.VARCHAR(120))
     score = db.Column(db.Integer)
-    student_id = db.Column(db.String(120))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    student_id = db.Column(db.String(120))
 
     def __repr__(self):
         return '<Submission {}>'
