@@ -221,7 +221,7 @@ def endpage():
     bottom = df.tail(10)
    
     concatenated = pd.concat([top,bottom])
-    concatenated.reset_index(inplace=True, drop=True)
+    # concatenated.reset_index(inplace=True, drop=True)
 
     print(concatenated)
 
