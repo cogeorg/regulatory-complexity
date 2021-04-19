@@ -223,6 +223,8 @@ def endpage():
     concatenated = pd.concat([top,bottom])
     concatenated.reset_index(inplace=True, drop=True)
 
+    print(concatenated)
+
     concatenated.to_html("./app/static/useranswers-" + str(current_user.id) + ".htm", index=None)
     table = concatenated.to_html()
 
