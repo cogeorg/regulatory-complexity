@@ -19,6 +19,7 @@ import pandas as pd
 import random
 import numpy as np
 from datetime import datetime
+from sqlalchemy import column
 
 import numpy
 
@@ -181,13 +182,13 @@ def experiment(n_reg=1, Score=0):
             if ( bool((int(correctanswer) == practiceanswer)) ):
                 # df = pd.read_csv("./app/static/submissions.csv", names=headers)
                 # Score = df['Score'].iloc[-1]
-                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('score'))]
+                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1]) + 1
             else:
                 # df = pd.read_csv("./app/static/submissions.csv", names=headers)
                 # Score = df['Score'].iloc[-1]
                 # Score = int(Score)
-                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('score'))]
+                Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1])
         
         print(Score)
@@ -239,9 +240,9 @@ def endpage():
     # test = Submission.query.filter_by(user_id=current_user.id).all()
     # test.query.filter_by(user_id=current_user.id).all()
     # test = [r.test for r in db.session.query(Submission.answer).filter_by(user_id=current_user.id).distinct()]
-    answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('answer'))]
-    correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('correctanswer'))]
-    regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(str('regulation'))]
+    answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("answer"))]
+    correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("correctanswer"))]
+    regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("regulation"))]
 
     # print(answer)
     # print(correct_answer)
@@ -272,8 +273,8 @@ def endpage():
 def leaderboard():
 
     # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
-    score = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((str('score')))]
-    user_id = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((str('user_id')))]
+    score = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((column("score")))]
+    user_id = [r[0] for r in Submission.query.filter(Submission.question.endswith(10)).values((column("user_id")))]
     # User.query.filter(User.email.endswith('@example.com')) 
     dummy_data3 = {
         'user' : user_id,
