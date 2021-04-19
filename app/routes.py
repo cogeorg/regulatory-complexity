@@ -217,6 +217,8 @@ def endpage():
 
     df = pd.DataFrame(dummy_data1, columns=['regulation', 'answer', 'correct answer'])
 
+    print(df)
+
     top = df.head(0)
     bottom = df.tail(10)
    
