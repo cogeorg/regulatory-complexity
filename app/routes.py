@@ -223,16 +223,16 @@ def endpage():
         'correct answer': correct_answer }
 
     df = pd.DataFrame(dummy_data1, columns=['regulation', 'answer', 'correct answer'])
-    print(df)
-    regulation = df.regulation.astype(int) + 1
+    # print(df)
+    # regulation = df.regulation.astype(int) + 1
 
-    dummy_data2 = {
-        'regulation': regulation,
-        'answer': answer,
-        'correct answer': correct_answer }
+    # dummy_data2 = {
+    #     'regulation': regulation,
+    #     'answer': answer,
+    #     'correct answer': correct_answer }
 
-    df = pd.DataFrame(dummy_data2, columns=['regulation', 'answer', 'correct answer'])
-    print(df)
+    # df = pd.DataFrame(dummy_data2, columns=['regulation', 'answer', 'correct answer'])
+    # print(df)
     # result = pd.concat(frames)
     # print(result)
     top = df.head(0)
