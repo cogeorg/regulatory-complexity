@@ -132,7 +132,7 @@
 </div>
 
 <script>
-  fetch("../static/useranswers.htm")
+  fetch("../static/useranswers-{{current_user.id}}.htm")
     .then(response => {
       return response.text()
     })
