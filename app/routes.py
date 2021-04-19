@@ -245,6 +245,9 @@ def leaderboard():
     df.to_html("./app/static/leaderboard.htm", index=None)
     table = df.to_html()
 
+    print(table)
+
+
     return render_template('leaderboard.html', table=table)
 
 @app.route('/logout')
