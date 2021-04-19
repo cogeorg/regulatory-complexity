@@ -228,7 +228,7 @@ def endpage():
     print(concatenated)
 
     bottom.to_html("./app/static/useranswers-" + str(current_user.id) + ".htm", index=None)
-    table = concatenated.to_html()
+    table = bottom.to_html()
 
     print(table)
 
