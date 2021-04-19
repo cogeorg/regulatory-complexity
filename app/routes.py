@@ -164,15 +164,19 @@ def experiment(n_reg=1, Score=0):
         if (n_reg == 1):
             if ( bool((int(correctanswer) == practiceanswer)) ):
                 Score = 1
+                print(Score)
             else:
                 Score = 0
+                print(Score)
         else:
             if ( bool((int(correctanswer) == practiceanswer)) ): 
                 Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1]) + 1
+                print(Score)
             else:
                 Score = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("score"))]
                 Score = int(Score[-1])
+                print(Score)
 
 
         db.session.add(Submission(
