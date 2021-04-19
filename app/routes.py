@@ -102,10 +102,7 @@ def accept_rules():
 def return_excel():
     name = 'excel_template.xlsx'
     response = send_file('./static/excel_template.xlsx', as_attachment=True)
-    # response.headers["x-filename"] = name
-    # response.headers["Access-Control-Expose-Headers"] = 'x-filename'
-    # response.headers["Content-Disposition"] = "attachment; filename=" + name
-
+    
     return response
 
 @app.route("/rules/")
@@ -134,15 +131,10 @@ def experiment(n_reg=1, Score=0):
     
     headers = ['question','answer']
     df = pd.read_csv("./app/static/correct_answers.csv", usecols=[0,1], names=headers, header=0)
-    # correctanswer = (str(df.loc[df['question'] == n_reg]['answer'].values)[1:1])
 
-    # print(n_reg)
-    # print(user_experiments)
     answer_key = user_experiments[n_reg-1]
-    # print(answer_key)
     answer_key = (int(answer_key))
     correctanswer = df.at[answer_key,'answer' ]
-    # print(correctanswer)
     
     df = pd.read_csv("./app/static/table_template.csv") 
     df.to_html("./app/static/table.htm", na_rep="", index=False, index_names=False, col_space=60)
@@ -158,9 +150,6 @@ def experiment(n_reg=1, Score=0):
  
     if form.validate_on_submit():
 
-        # submission = Submission(answer = form.answer.data, correctanswer = correctanswer , verifyanswer = bool((correctanswer == form.answer.data)), regulation = user_experiments[n_reg-1], balance_sheet = user_experiments[n_reg-1], user_id = current_user.id),
-        # spenttime = ((datetime.utcnow() - session['start_time']))
-
         if n_reg == 1 :
             random_exp = (random.randint(0,9999))
             with open("./app/static/question-sets/user_" + str(user_id) + "_question_set.csv", "w") as file:
@@ -171,7 +160,6 @@ def experiment(n_reg=1, Score=0):
         else: 
             practiceanswer = int(form.answer.data)
 
-        # headers = ['Index','Regulation','balance_sheet','answer','true','correctanswer','user_id','Student ID','Username', 'Time Elapsed','Submission Time','Score']
         
         if (n_reg == 1):
             if ( bool((int(correctanswer) == practiceanswer)) ):
@@ -205,11 +193,6 @@ def experiment(n_reg=1, Score=0):
             user_id = current_user.id)),
         db.session.commit()
                 
-        # row = [n_reg, user_experiments[n_reg-1], user_experiments[n_reg-1], submission.answer, submission.verifyanswer, submission.correctanswer, current_user.id, current_user.student_id, current_user.username, str(spenttime), datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"), datetime.utcnow().strftime("%Y-%m-%d"), Score, random_user_num ]
-        # with open('./app/static/submissions.csv', "a") as f:
-        #     writer = csv.writer(f)
-        #     writer.writerow(row)
-        # f.close()
 
         if n_reg<=9:
             return redirect(url_for("experiment", n_reg=n_reg+1)) #+1))
@@ -223,7 +206,6 @@ def experiment(n_reg=1, Score=0):
                     }
     df = pd.DataFrame(dummy_data2, index=[0])
     bottom = df.tail(1)
-    #print(bottom)
     
     return render_template('experiment.html', form = form, user_experiment_id = user_experiments[n_reg-1], n_reg = n_reg, table = table)
 
@@ -231,34 +213,31 @@ def experiment(n_reg=1, Score=0):
 @app.route('/endpage')
 def endpage():
 
-    # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','User ID','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
-    # df = pd.read_csv("./app/static/submissions.csv", usecols=[0,3,5,6], names=headers)
-
-    # top = df.head(0)
-    # bottom = df.tail(10)
-
-    # test = Submission.query.filter_by(user_id=current_user.id).all()
-    # test.query.filter_by(user_id=current_user.id).all()
-    # test = [r.test for r in db.session.query(Submission.answer).filter_by(user_id=current_user.id).distinct()]
     answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("answer"))]
     correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("correctanswer"))]
     regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("regulation"))]
 
-    # print(answer)
-    # print(correct_answer)
-    # print(regulation)
-
     dummy_data1 = {
         'regulation': regulation,
         'answer': answer,
-        'correct answer': correct_answer}
+        'correct answer': correct_answer }
 
     df = pd.DataFrame(dummy_data1, columns=['regulation', 'answer', 'correct answer'])
+    print(df)
+    regulation = df.regulation.astype(int) + 1
+
+    dummy_data2 = {
+        'regulation': regulation,
+        'answer': answer,
+        'correct answer': correct_answer }
+
+    df = pd.DataFrame(dummy_data2, columns=['regulation', 'answer', 'correct answer'])
+    print(df)
+    # result = pd.concat(frames)
+    # print(result)
     top = df.head(0)
     bottom = df.tail(10)
-    #print(df)
-    # names, data = query_to_list(answer)
-    # df2 = pd.DataFrame.from_records(data, columns=names)
+   
     concatenated = pd.concat([top,bottom])
     concatenated.reset_index(inplace=True, drop=True)
 
@@ -268,14 +247,13 @@ def endpage():
     return render_template('endpage.html', table=table)
 
 
-
 @app.route('/leaderboard')
 def leaderboard():
 
-    # headers = ['Index','Regulation','balance_sheet','answer','true','Correct Answer','user_id','Student ID', 'Username', 'Time Elapsed','Submission Full Time', 'Submission Date', 'Score']
+   
     score = [r[0] for r in Submission.query.filter_by(question = '10').values((column("score")))]
     user_id = [r[0] for r in Submission.query.filter_by(question = '10').values((column("user_id")))]
-    # User.query.filter(User.email.endswith('@example.com')) 
+   
     dummy_data3 = {
         'user' : user_id,
         'score': score
@@ -285,7 +263,6 @@ def leaderboard():
     df = df.sort_values(by='score', ascending=False)
     df.to_html("./app/static/leaderboard.htm", index=None)
     table = df.to_html()
-    # table = df.loc[df['Index'] == 10].sort_values(by='Score', ascending=False).to_html("./app/static/leaderboard.htm", index=None)
 
     return render_template('leaderboard.html', table=table)
 
