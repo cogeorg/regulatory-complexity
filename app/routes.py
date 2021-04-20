@@ -230,7 +230,7 @@ def endpage():
 
     df.sort_index()
 
-    df = df.sort_values(by='question', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+    # df = df.sort_values(by='question', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
 
     print(df.dtypes)
 
