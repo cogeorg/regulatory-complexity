@@ -235,7 +235,7 @@ def endpage():
     print(df.dtypes)
 
     # top = df.head(0)
-    bottom = df.tail(10)
+    bottom = df.tail(100)
 
     print(bottom)
    
