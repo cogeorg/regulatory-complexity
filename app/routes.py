@@ -211,27 +211,29 @@ def endpage():
     answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("answer"))]
     correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("correctanswer"))]
     regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("regulation"))]
+    user_id = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("user_id"))]
 
     dummy_data1 = {
         'question': question,
         'regulation': regulation,
         'answer': answer,
-        'correct answer': correct_answer }
+        'correct answer': correct_answer ,
+        'user id': user_id}
 
     
-    df = pd.DataFrame(dummy_data1, columns=['question','regulation', 'answer', 'correct answer'])
+    df = pd.DataFrame(dummy_data1, columns=['question','regulation', 'answer', 'correct answer', 'user id'])
     # df = df.sort_values(by='question', ascending=False)
-
-    print(df.dtypes)
-
-    # top = df.head(0)
-    bottom = df.tail(10)
 
     pd.to_numeric(df.question)
     
     df["question"] = pd.to_numeric(df["question"])
 
     df = df.sort_values(by='question', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+
+    print(df.dtypes)
+
+    # top = df.head(0)
+    bottom = df.tail(300)
 
     print(bottom)
    
