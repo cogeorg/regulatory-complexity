@@ -207,6 +207,7 @@ def experiment(n_reg=1):
 @app.route('/endpage')
 def endpage():
 
+    id = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("id"))]
     question = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("question"))]
     answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("answer"))]
     correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("correctanswer"))]
@@ -214,14 +215,16 @@ def endpage():
     user_id = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("user_id"))]
 
     dummy_data1 = {
+        'ID': id,
         'question': question,
         'regulation': regulation,
         'answer': answer,
         'correct answer': correct_answer ,
-        'user id': user_id}
+        'user id': user_id
+        }
 
     
-    df = pd.DataFrame(dummy_data1, columns=['question','regulation', 'answer', 'correct answer', 'user id'])
+    df = pd.DataFrame(dummy_data1, columns=['ID', 'question','regulation', 'answer', 'correct answer', 'user id'])
     # df = df.sort_values(by='question', ascending=False)
 
     pd.to_numeric(df.question)
@@ -230,7 +233,7 @@ def endpage():
 
     df.sort_index()
 
-    # df = df.sort_values(by='question', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+    df = df.sort_values(by='ID', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
 
     print(df.dtypes)
 
