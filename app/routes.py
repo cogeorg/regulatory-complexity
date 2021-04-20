@@ -212,19 +212,16 @@ def endpage():
     answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("answer"))]
     correct_answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("correctanswer"))]
     regulation = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("regulation"))]
-    user_id = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("user_id"))]
 
     dummy_data1 = {
         'ID': id,
         'question': question,
         'regulation': regulation,
         'answer': answer,
-        'correct answer': correct_answer ,
-        'user id': user_id
+        'correct answer': correct_answer,
         }
-
-    
-    df = pd.DataFrame(dummy_data1, columns=['ID', 'question','regulation', 'answer', 'correct answer', 'user id'])
+ 
+    df = pd.DataFrame(dummy_data1, columns=['ID', 'question','regulation', 'answer', 'correct answer'])
     # df = df.sort_values(by='question', ascending=False)
 
     pd.to_numeric(df.question)
