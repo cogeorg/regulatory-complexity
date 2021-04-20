@@ -222,9 +222,14 @@ def endpage():
     df = pd.DataFrame(dummy_data1, columns=['question','regulation', 'answer', 'correct answer'])
     # df = df.sort_values(by='question', ascending=False)
 
-    df.sort_values(by='question', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+    pd.to_numeric(df.question)
+    
+    df["question"] = pd.to_numeric(df["question"])
 
-    print(df)
+    df = df.sort_values(by='question', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+
+    print(df.dtypes)
+    
 
     # top = df.head(0)
     bottom = df.tail(10)
