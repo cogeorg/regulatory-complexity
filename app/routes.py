@@ -233,14 +233,14 @@ def endpage():
 
     df.sort_index()
 
-    df.sort_values(['ID', 'question'], ascending=[True, True])
+    # df.sort_values(['ID', 'question'], ascending=[True, True])
 
-    # df = df.sort_values(by='ID', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+    df = df.sort_values(by='ID', axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
 
     print(df.dtypes)
 
     # top = df.head(0)
-    bottom = df.tail(10)
+    bottom = df.tail(100)
 
     print(bottom)
    
