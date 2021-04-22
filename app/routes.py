@@ -14,10 +14,15 @@ from app import app, db
 from app.forms import LoginForm, RegistrationForm, RulesForm, SubmissionForm, PracticeForm
 from flask_login import login_required, logout_user
 from werkzeug.urls import url_parse
+import csv
 import pandas as pd
 import random
+import numpy as np
 from datetime import datetime
 from sqlalchemy import column
+from sqlalchemy.inspection import inspect
+
+
 import numpy
 
 from psycopg2.extensions import register_adapter, AsIs
@@ -215,6 +220,7 @@ def experiment(n_reg=1):
 
 @app.route('/endpage')
 def endpage():
+
     id = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("id"))]
     question = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("question"))]
     answer = [r[0] for r in Submission.query.filter_by(user_id=current_user.id).values(column("answer"))]
@@ -288,36 +294,34 @@ def downloadcsv():
         </body></html>
         '''
 
+
 @app.route("/getsubmissionscsv")
 def getPlotCSV():
 
-    id = [r[0] for r in Submission.query.all().values(column("id"))]
-    question = [r[0] for r in Submission.query.all().values(column("question"))]
-    answer = [r[0] for r in Submission.query.all().values(column("answer"))]
-    correct_answer = [r[0] for r in Submission.query.all().values(column("correctanswer"))]
-    regulation = [r[0] for r in Submission.query.all().values(column("regulation"))]
-    totaltime = [r[0] for r in Submission.query.all().values(column("totaltime"))]
-    verifyanswer = [r[0] for r in Submission.query.all().values(column("verifyanswer"))]
-    student_id = [r[0] for r in Submission.query.all().values(column("student_id"))]
-    score = [r[0] for r in Submission.query.all().values(column("score"))]
+    users = Submission.query.all()
 
-    dummy_data1 = {
-        'ID': id,
-        'question': question,
-        'regulation': regulation,
-        'answer': answer,
-        'correct answer': correct_answer,
-        'totaltime': totaltime,
-        'verifyanswer': verifyanswer,
-        'student_id': student_id,
-        'score': score
-    }
+    rows = []
 
-    df = pd.DataFrame(dummy_data1,
-                      columns=['ID', 'question', 'regulation', 'answer', 'correct answer', 'totaltime', 'verifyanswer',
-                               'student_id', 'score'])
+    for user in users:
+        new_row = {
+        'ID': user.id,
+        'question': user.question,
+        'regulation': user.regulation,
+        'answer': user.answer,
+        'correct answer': user.correctanswer,
+        'totaltime': user.totaltime,
+        'verifyanswer': user.verifyanswer,
+        'student_id': user.student_id,
+        'score': user.score
+        }
 
-    df.to_csv(r'./app/static/submissions.csv', index=False, header=True)
+        rows.append(new_row)
+
+        df = pd.DataFrame(rows,
+                          columns=['ID', 'question', 'regulation', 'answer', 'correct answer', 'totaltime', 'verifyanswer',
+                                   'student_id', 'score'])
+
+        df.to_csv(r'./app/static/submissions.csv', index=False, header=True)
 
     with open("./app/static/submissions.csv") as fp:
         csv = fp.read()
