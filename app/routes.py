@@ -19,12 +19,7 @@ import pandas as pd
 import random
 from datetime import datetime
 from sqlalchemy import column
-import os
-import sqlalchemy
 
-
-
-engine = sqlalchemy.create_engine(os.environ.get('DATABASE_URL'))
 
 import numpy
 
