@@ -83,7 +83,6 @@ def login():
         return redirect(url_for('accept_rules'))
     return render_template('login.html', title="Sign in", form=form)
 
-
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if current_user.is_authenticated:
@@ -91,7 +90,19 @@ def register():
         return redirect(url_for('accept_rules'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, student_id=form.student_id.data)
+        user = User(
+            username=form.username.data,
+            email=form.email.data,
+            student_id=form.student_id.data,
+            age=form.age.data,
+            sex=form.sex.data,
+            education=form.education.data,
+            year=form.year.data,
+            area=form.area.data,
+            institution=form.institution.data,
+            experience=form.experience.data,
+            years_experience=form.years_experience.data
+            )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -117,11 +128,9 @@ def return_excel():
 
     return response
 
-
 @app.route("/rules/")
 def rules():
     return render_template("rules.html")
-
 
 @app.route('/experiment', methods=["GET", "POST"])
 @app.route('/experiment/<int:n_reg>', methods=["GET", "POST"])
@@ -292,6 +301,14 @@ def downloadcsv():
         </body></html>
         '''
 
+@app.route('/download-user-csv')
+def downloadusercsv():
+    return '''
+        <html><body>
+        <a href="/getusercsv">Download Users</a>
+        </body></html>
+        '''
+
 
 @app.route("/getsubmissionscsv")
 def getPlotCSV():
@@ -334,3 +351,44 @@ def getPlotCSV():
         mimetype="text/csv",
         headers={"Content-disposition":
                      "attachment; filename=submissions.csv"})
+
+
+@app.route("/getusercsv")
+def getUserCSV():
+
+    username = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("username")))]
+    email = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("email")))]
+    student_id = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("student_id")))]
+    sex = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("sex")))]
+    education = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("education")))]
+    year = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("year")))]
+    area = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("area")))]
+    institution = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("institution")))]
+    experience = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("experience")))]
+    years_experience = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("years_experience")))]
+
+    dummy_data3 = {
+        'username': username,
+        'email': email,
+        'student_id': student_id,
+        'sex': sex,
+        'education': education,
+        'year': year,
+        'area': area,
+        'institution': institution,
+        'experience': experience,
+        'years_experience': years_experience
+    }
+
+    df = pd.DataFrame(dummy_data3)
+
+    df.to_csv(r'./app/static/users.csv', header=True)
+
+    with open("./app/static/users.csv") as fp:
+        csv = fp.read()
+
+    return Response(
+        csv,
+        mimetype="text/csv",
+        headers={"Content-disposition":
+                     "attachment; filename=users.csv"})
