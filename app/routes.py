@@ -17,11 +17,14 @@ from werkzeug.urls import url_parse
 import csv
 import pandas as pd
 import random
-import numpy as np
 from datetime import datetime
 from sqlalchemy import column
-from sqlalchemy.inspection import inspect
+import os
+import sqlalchemy
 
+
+
+engine = sqlalchemy.create_engine(os.environ.get('DATABASE_URL'))
 
 import numpy
 
@@ -298,30 +301,78 @@ def downloadcsv():
 @app.route("/getsubmissionscsv")
 def getPlotCSV():
 
-    users = Submission.query.all()
+    score = [r[0] for r in Submission.query.filter((Submission.user_id.between('1', '400 '))).values((column("score")))]
+    username = [r[0] for r in Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("student_id")))]
+    answer = [r[0] for r in
+                Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("answer")))]
+    correct_answer = [r[0] for r in
+              Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("correctanswer")))]
+    regulation = [r[0] for r in
+              Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("regulation")))]
+    question = [r[0] for r in
+              Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("question")))]
+    student_id = [r[0] for r in
+                Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("student_id")))]
+    totaltime = [r[0] for r in
+                Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("totaltime")))]
 
-    rows = []
+    dummy_data3 = {
+        'question': question,
+        'regulation': regulation,
+        'user': username,
+        'answer': answer,
+        'correct answer': correct_answer,
+        'score': score,
+        'student id': student_id,
+        'time taken': totaltime
+    }
 
-    for user in users:
-        new_row = {
-        'ID': user.id,
-        'question': user.question,
-        'regulation': user.regulation,
-        'answer': user.answer,
-        'correct answer': user.correctanswer,
-        'totaltime': user.totaltime,
-        'verifyanswer': user.verifyanswer,
-        'student_id': user.student_id,
-        'score': user.score
-        }
+    df = pd.DataFrame(dummy_data3)
 
-        rows.append(new_row)
+    df.to_csv(r'./app/static/submissions.csv', header=True)
 
-        df = pd.DataFrame(rows,
-                          columns=['ID', 'question', 'regulation', 'answer', 'correct answer', 'totaltime', 'verifyanswer',
-                                   'student_id', 'score'])
+    with open("./app/static/submissions.csv") as fp:
+        csv = fp.read()
 
-        df.to_csv(r'./app/static/submissions.csv', index=False, header=True)
+    return Response(
+        csv,
+        mimetype="text/csv",
+        headers={"Content-disposition":
+                     "attachment; filename=submissions.csv"})
+
+
+@app.route("/getusers")
+def getPlotCSV():
+
+    score = [r[0] for r in Submission.query.filter((Submission.user_id.between('1', '400 '))).values((column("score")))]
+    username = [r[0] for r in Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("student_id")))]
+    answer = [r[0] for r in
+                Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("answer")))]
+    correct_answer = [r[0] for r in
+              Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("correctanswer")))]
+    regulation = [r[0] for r in
+              Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("regulation")))]
+    question = [r[0] for r in
+              Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("question")))]
+    student_id = [r[0] for r in
+                Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("student_id")))]
+    totaltime = [r[0] for r in
+                Submission.query.filter((Submission.user_id.between('1', '400'))).values((column("totaltime")))]
+
+    dummy_data3 = {
+        'question': question,
+        'regulation': regulation,
+        'user': username,
+        'answer': answer,
+        'correct answer': correct_answer,
+        'score': score,
+        'student id': student_id,
+        'time taken': totaltime
+    }
+
+    df = pd.DataFrame(dummy_data3)
+
+    df.to_csv(r'./app/static/submissions.csv', header=True)
 
     with open("./app/static/submissions.csv") as fp:
         csv = fp.read()
