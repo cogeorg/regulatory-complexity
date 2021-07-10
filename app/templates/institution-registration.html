@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+  <div class="container"><br>
+    <center>
+      <h2> Register </h2>
+    </center>
+  </div>
+
+  <div class = "container theme-showcase" role ="main">
+    <div class="row">
+      <div class="col-md-4 col-lg-offset-4">
+        {{ wtf.quick_form(form)}}
+        By registering you agree to our <a href="https://docs.google.com/document/d/14w8jqVhi-En_Wmi-HKczsEI1EEUICpBNfPoGKRffqZ4/edit?usp=sharing"  target="_blank">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

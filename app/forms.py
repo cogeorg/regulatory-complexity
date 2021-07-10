@@ -10,8 +10,9 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember me')
     submit = SubmitField('Sign in')
 
-class RegistrationForm(FlaskForm):
+class StudentRegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
+    usertype= HiddenField('Usertype', default="Student")
     student_id = StringField("Student ID", validators=[DataRequired()])
     sex = SelectField('Sex', choices=[('Male','Male'), ('Female','Female'), ('Other','Other')])
     age = StringField('Age')
@@ -23,6 +24,38 @@ class RegistrationForm(FlaskForm):
     experience = SelectField('Professional Experience', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
     years_experience = StringField('Years of Professional Experience')
     email = StringField('Email', validators = [DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password', message = 'not the same password')])
+    submit = SubmitField('Register')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user is not None:
+            raise ValidationError('Username already taken.')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Email already linked to another account.')
+
+class InstitutionRegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    usertype= HiddenField('Usertype', default="Institution")
+    affiliation = StringField("Affiliation")
+    sex = SelectField('Sex', choices=[('Male','Male'), ('Female','Female'), ('Other','Other')])
+    age = StringField('Age')
+
+    education = SelectField('Highest degree obtained', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
+
+    area = SelectField('Area highest degree was obtained in', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
+
+    year = StringField('Year highest degree was obtained')
+    institution = StringField('Institution where highest degree was obtained')
+    experience = SelectField('Professional Experience', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
+
+    years_experience = StringField('Years of Professional Experience')
+    businessemail = StringField('Business Email')
+    #email = StringField('Email', validators = [DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password', message = 'not the same password')])
     submit = SubmitField('Register')

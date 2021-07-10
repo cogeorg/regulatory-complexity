@@ -11,7 +11,7 @@ from flask import render_template, flash, redirect, request, url_for, send_file,
 from flask_login import current_user, login_user
 from app.models import User, Submission, CorrectAnswer
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, RulesForm, SubmissionForm, PracticeForm
+from app.forms import LoginForm, StudentRegistrationForm,  InstitutionRegistrationForm, RulesForm, SubmissionForm, PracticeForm
 from flask_login import login_required, logout_user
 from werkzeug.urls import url_parse
 import csv
@@ -83,12 +83,12 @@ def login():
         return redirect(url_for('accept_rules'))
     return render_template('login.html', title="Sign in", form=form)
 
-@app.route('/register', methods=["GET", "POST"])
-def register():
+@app.route('/register-student', methods=["GET", "POST"])
+def registerstudent():
     if current_user.is_authenticated:
         flash('You are already logged in!')
         return redirect(url_for('accept_rules'))
-    form = RegistrationForm()
+    form = StudentRegistrationForm()
     if form.validate_on_submit():
         user = User(
             username=form.username.data,
@@ -101,20 +101,50 @@ def register():
             area=form.area.data,
             institution=form.institution.data,
             experience=form.experience.data,
-            years_experience=form.years_experience.data
+            years_experience=form.years_experience.data,
+            usertype=form.usertype.data
             )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('You are now a registered user!')
         return redirect(url_for("login"))
-    return render_template("register.html", title="Register", form=form)
+    return render_template("student-registration.html", title="Register", form=form)
+
+
+@app.route('/register-institution', methods=["GET", "POST"])
+def registerinstitution():
+    if current_user.is_authenticated:
+        flash('You are already logged in!')
+        return redirect(url_for('accept_rules'))
+    form = InstitutionRegistrationForm()
+    if form.validate_on_submit():
+        user = User(
+            username=form.username.data,
+            businessemail=form.businessemail.data,
+            affiliation=form.affiliation.data,
+            age=form.age.data,
+            sex=form.sex.data,
+            education=form.education.data,
+            year=form.year.data,
+            area=form.area.data,
+            institution=form.institution.data,
+            experience=form.experience.data,
+            years_experience=form.years_experience.data,
+            usertype=form.usertype.data
+            )
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('You are now a registered user!')
+        return redirect(url_for("login"))
+    return render_template("institution-registration.html", title="Register", form=form)
 
 
 @app.route('/accept_rules', methods=["GET", "POST"])
 def accept_rules():
     if not current_user.is_authenticated:
-        return redirect(url_for("register"))
+        return redirect(url_for("registerstudent"))
     form = RulesForm()
     if form.validate_on_submit():
         return redirect(url_for("experiment"))

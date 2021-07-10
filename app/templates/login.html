@@ -23,7 +23,9 @@
     <div class="col-md-4 col-lg-offset-4">
       {{ wtf.quick_form(form) }}
       <p>
-        New user? <a href = "{{ url_for('register') }}"> Click to register!</a>
+        New user? <br>
+        <a href = "{{ url_for('registerstudent') }}"> Click to register as Student</a><br>
+        <a href = "{{ url_for('registerinstitution') }}"> Click to register as Policy Institution</a>
       </p>
     </div>
 

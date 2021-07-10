@@ -9,8 +9,10 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(64), index = True, unique = True)
     email = db.Column(db.String(120), index = True, unique = True)
+    businessemail = db.Column(db.String(120), index = True, unique = True)
     password_hash = db.Column(db.String(128))
     submissions = db.relationship('Submission', backref = 'author', lazy = 'dynamic')
+    affiliation = db.Column(db.String(64), index = True, unique = True)
     student_id = db.Column(db.String(64), index = True, unique = True)
     sex = db.Column(db.String(64), index = True)
     age = db.Column(db.String(64), index = True)
@@ -18,6 +20,7 @@ class User(UserMixin, db.Model):
     year = db.Column(db.String(64), index = True)
     area = db.Column(db.String(120), index = True)
     institution = db.Column(db.String(256), index = True)
+    usertype = db.Column(db.String(256), index = True)
     experience = db.Column(db.String(128), index = True)
     years_experience = db.Column(db.String(128), index = True)
 
@@ -48,7 +51,9 @@ class Submission(db.Model):
     balance_sheet = db.Column(db.VARCHAR(120))
     score = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    student_id = db.Column(db.String(120))
+    usertype = db.Column(db.String(120))
+    student_id = db.Column(db.String(128))
+    affiliation = db.Column(db.String(128))
 
     def __repr__(self):
         return '<Submission {}>'
