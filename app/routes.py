@@ -240,7 +240,9 @@ def experiment(n_reg=1):
             balance_sheet=user_experiments[n_reg - 1],
             score=Score,
             user_id=current_user.id,
-            student_id=current_user.student_id)),
+            student_id=current_user.student_id,
+            affiliation=current_user.affiliation,
+            usertype=current_user.usertype)),
         db.session.commit()
         db.session.expire_all()
 
