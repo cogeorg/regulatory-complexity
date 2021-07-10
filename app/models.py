@@ -43,7 +43,7 @@ def load_correctanswer(correctanswer):
 class Submission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.VARCHAR(120))
-    answer = db.Column(db.Float())
+    answer = db.Column(db.VARCHAR(120))
     correctanswer = db.Column(db.Float())
     verifyanswer = db.Column(db.Float())
     totaltime = db.Column(db.VARCHAR(120))
@@ -54,6 +54,7 @@ class Submission(db.Model):
     usertype = db.Column(db.String(120))
     student_id = db.Column(db.String(128))
     affiliation = db.Column(db.String(128))
+    
 
     def __repr__(self):
         return '<Submission {}>'
