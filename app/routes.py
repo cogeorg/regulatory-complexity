@@ -389,8 +389,11 @@ def getPlotCSV():
 def getUserCSV():
 
     username = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("username")))]
+    usertype = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("usertype")))]
     email = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("email")))]
+    businessemail = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("businessemail")))]
     student_id = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("student_id")))]
+    affiliation = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("affiliation")))]
     sex = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("sex")))]
     education = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("education")))]
     year = [r[0] for r in User.query.filter((User.id.between('1', '400'))).values((column("year")))]
@@ -401,8 +404,11 @@ def getUserCSV():
 
     dummy_data3 = {
         'username': username,
+        'usertype': usertype,
         'email': email,
+        'businessemail': businessemail,
         'student_id': student_id,
+        'affiliation': affiliation,
         'sex': sex,
         'education': education,
         'year': year,
