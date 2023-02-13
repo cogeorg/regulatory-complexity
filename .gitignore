@@ -1,6 +1,5 @@
 # Mac file types to be ignored
 .DS_Store
-.DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
@@ -22,3 +21,5 @@ chromedriver
 
 # files to be ignored
 ./app/static/submissions.csv
+.env
+.flaskenv

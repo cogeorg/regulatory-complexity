@@ -1,84 +1,165 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField, IntegerField, HiddenField, SelectField
+from wtforms import (
+    StringField,
+    PasswordField,
+    BooleanField,
+    SubmitField,
+    FloatField,
+    IntegerField,
+    HiddenField,
+    SelectField,
+)
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 from app.models import CorrectAnswer
 
+
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators = [DataRequired()])
-    password = PasswordField('Password', validators = [DataRequired()])
-    remember_me = BooleanField('Remember me')
-    submit = SubmitField('Sign in')
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    remember_me = BooleanField("Remember me")
+    submit = SubmitField("Sign in")
+
 
 class StudentRegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    usertype= HiddenField('Usertype', default="Student")
+    username = StringField("Username", validators=[DataRequired()])
+    usertype = HiddenField("Usertype", default="Student")
     student_id = StringField("Student ID", validators=[DataRequired()])
-    sex = SelectField('Sex', choices=[('Male','Male'), ('Female','Female'), ('Other','Other')])
-    age = StringField('Age')
+    sex = SelectField(
+        "Sex", choices=[("Male", "Male"), ("Female", "Female"), ("Other", "Other")]
+    )
+    age = StringField("Age")
 
-    education = SelectField('Highest degree obtained', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
-    area = SelectField('Area highest degree was obtained in', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
-    year = StringField('Year highest degree was obtained')
-    institution = StringField('The name of Institution where qualification complete')
-    experience = SelectField('Professional Experience', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
-    years_experience = StringField('Years of Professional Experience')
-    email = StringField('Email', validators = [DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password', message = 'not the same password')])
-    submit = SubmitField('Register')
+    education = SelectField(
+        "Highest degree obtained",
+        choices=[
+            ("PhD", "PhD"),
+            ("Master’s Level", "Master’s Level"),
+            ("Bachelor’s Level", "Bachelor’s Level"),
+        ],
+    )
+    area = SelectField(
+        "Area highest degree was obtained in",
+        choices=[
+            ("Business", "Business"),
+            ("Technology", "Technology"),
+            ("Legal/Compliance", "Legal/Compliance"),
+            ("Other", "Other"),
+        ],
+    )
+    year = StringField("Year highest degree was obtained")
+    institution = StringField("The name of Institution where qualification complete")
+    experience = SelectField(
+        "Professional Experience",
+        choices=[
+            ("Business", "Business"),
+            ("Technology", "Technology"),
+            ("Legal/Compliance", "Legal/Compliance"),
+            ("Other", "Other"),
+        ],
+    )
+    years_experience = StringField("Years of Professional Experience")
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    password2 = PasswordField(
+        "Repeat password",
+        validators=[
+            DataRequired(),
+            EqualTo("password", message="not the same password"),
+        ],
+    )
+    submit = SubmitField("Register")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Username already taken.')
+            raise ValidationError("Username already taken.")
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Email already linked to another account.')
+            raise ValidationError("Email already linked to another account.")
+
 
 class InstitutionRegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    usertype= HiddenField('Usertype', default="Institution")
+    username = StringField("Username", validators=[DataRequired()])
+    usertype = HiddenField("Usertype", default="Institution")
     affiliation = StringField("Affiliation")
-    sex = SelectField('Sex', choices=[('Male','Male'), ('Female','Female'), ('Other','Other')])
-    age = StringField('Age')
+    sex = SelectField(
+        "Sex", choices=[("Male", "Male"), ("Female", "Female"), ("Other", "Other")]
+    )
+    age = StringField("Age")
 
-    education = SelectField('Highest degree obtained', choices=[('PhD','PhD'), ('Master’s Level','Master’s Level'), ('Bachelor’s Level','Bachelor’s Level') ])
+    education = SelectField(
+        "Highest degree obtained",
+        choices=[
+            ("PhD", "PhD"),
+            ("Master’s Level", "Master’s Level"),
+            ("Bachelor’s Level", "Bachelor’s Level"),
+        ],
+    )
 
-    area = SelectField('Area highest degree was obtained in', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
+    area = SelectField(
+        "Area highest degree was obtained in",
+        choices=[
+            ("Business", "Business"),
+            ("Technology", "Technology"),
+            ("Legal/Compliance", "Legal/Compliance"),
+            ("Other", "Other"),
+        ],
+    )
 
-    year = StringField('Year highest degree was obtained')
-    institution = StringField('Institution where highest degree was obtained')
-    experience = SelectField('Professional Experience', choices=[('Business','Business'), ('Technology','Technology'), ('Legal/Compliance','Legal/Compliance'), ('Other', 'Other') ])
+    year = StringField("Year highest degree was obtained")
+    institution = StringField("Institution where highest degree was obtained")
+    experience = SelectField(
+        "Professional Experience",
+        choices=[
+            ("Business", "Business"),
+            ("Technology", "Technology"),
+            ("Legal/Compliance", "Legal/Compliance"),
+            ("Other", "Other"),
+        ],
+    )
 
-    years_experience = StringField('Years of Professional Experience')
-    businessemail = StringField('Business Email')
-    #email = StringField('Email', validators = [DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password', message = 'not the same password')])
-    submit = SubmitField('Register')
+    years_experience = StringField("Years of Professional Experience")
+    businessemail = StringField("Business Email")
+    # email = StringField('Email', validators = [DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    password2 = PasswordField(
+        "Repeat password",
+        validators=[
+            DataRequired(),
+            EqualTo("password", message="not the same password"),
+        ],
+    )
+    submit = SubmitField("Register")
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Username already taken.')
+            raise ValidationError("Username already taken.")
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Email already linked to another account.')
+            raise ValidationError("Email already linked to another account.")
+
 
 class RulesForm(FlaskForm):
-    rules = BooleanField("I have read and understood the rules", validators= [DataRequired()])
+    rules = BooleanField(
+        "I have read and understood the rules", validators=[DataRequired()]
+    )
     # excel = BooleanField("I have tested the template and can open it", validators=[DataRequired()])
     submit = SubmitField("Continue", render_kw={"onclick": "reset_timer()"})
 
+
 class PracticeForm(FlaskForm):
     # answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
-    answer = HiddenField("Enter the bank's total risk weighted assets for this regulation:", default="Practice")
-    n_reg  = HiddenField(id="n_reg")
+    answer = HiddenField(
+        "Enter the bank's total risk weighted assets for this regulation:",
+        default="Practice",
+    )
+    n_reg = HiddenField(id="n_reg")
     sex = HiddenField()
     age = HiddenField()
     education = HiddenField()
@@ -99,12 +180,17 @@ class PracticeForm(FlaskForm):
 
     #     return True
 
-    submit = SubmitField("Continue", id="modalbtn", render_kw={"onclick": "reset_timer()"})
+    submit = SubmitField(
+        "Continue", id="modalbtn", render_kw={"onclick": "reset_timer()"}
+    )
 
 
 class SubmissionForm(FlaskForm):
-    answer = FloatField("Enter the bank's total risk weighted assets for this regulation:", validators = [DataRequired()])
-    n_reg  = HiddenField(id="n_reg", validators = [DataRequired()])
+    answer = FloatField(
+        "Enter the bank's total risk weighted assets for this regulation:",
+        validators=[DataRequired()],
+    )
+    n_reg = HiddenField(id="n_reg", validators=[DataRequired()])
     sex = HiddenField()
     age = HiddenField()
     education = HiddenField()
@@ -113,7 +199,8 @@ class SubmissionForm(FlaskForm):
     institution = HiddenField()
     experience = HiddenField()
     years_experience = HiddenField()
-    def validate(self):
+
+    def validate(self, extra_validators=None):
         rv = FlaskForm.validate(self)
         if not rv:
             return False

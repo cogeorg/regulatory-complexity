@@ -4,6 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+black = "*"
 
 [packages]
 flask = "*"
@@ -14,12 +15,13 @@ flask-sqlalchemy = "*"
 flask-login = "*"
 python-dotenv = "*"
 gunicorn = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 email_validator = "*"
 pandas = "*"
 gspread = "*"
 google-api-python-client = "*"
 oauth2client = "*"
+importlib-metadata = "*"
 
 [requires]
 python_version = "3.8"
